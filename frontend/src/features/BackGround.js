@@ -10,8 +10,9 @@ const BackGround = () => (
       zIndex: '-1',
       left: '0px',
       top: '0px',
-      opacity: '0.4',
-      filter: 'blur(5px)',
+
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
     }}
   ></Stack>
 );
