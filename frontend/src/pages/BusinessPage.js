@@ -3,13 +3,11 @@ import { Button, Typography, Stack, IconButton } from '@mui/material';
 import WestIcon from '@mui/icons-material/West';
 import OptionInput from '../features/BusinessPage/OptionInput';
 import { WEEK_DAYS } from '../features/BusinessPage/data';
-import BackGround from '../features/BackGround';
 import FrostedBackground from '../features/FrostedBackground';
 
 const BusinessPage = () => {
   return (
-    <Stack py={4} spacing={2} alignItems={'center'} sx={{}}>
-      <BackGround></BackGround>
+    <Stack spacing={2} alignItems={'center'} sx={{}}>
       <FrostedBackground>
         <Stack direction={'row'} alignItems={'center'} spacing={2}>
           <IconButton color='black'>
