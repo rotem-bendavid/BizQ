@@ -1,7 +1,9 @@
 import { Button, Stack, Typography } from '@mui/material';
 import React from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const TopicCube = ({ topicObj }) => {
+  const history = useHistory();
   return (
     <Button
       sx={{
@@ -14,6 +16,9 @@ const TopicCube = ({ topicObj }) => {
           scale: '1.1',
           boxShadow: ' rgba(0, 0, 0, 0.64) 0px 3px 8px',
         },
+      }}
+      onClick={() => {
+        history.push(`/AllBusinessPage/${topicObj.name}`);
       }}
     >
       <img

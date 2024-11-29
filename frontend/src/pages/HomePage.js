@@ -1,39 +1,19 @@
 import React from 'react';
-import {
-  Button,
-  Typography,
-  Stack,
-  IconButton,
-  Card,
-  Grid,
-} from '@mui/material';
+import { Button, Typography, Stack } from '@mui/material';
 import BackGround from '../features/BackGround';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import AppHeader from '../features/AppHeader';
 
 const HomePage = () => {
+  const history = useHistory();
+
   return (
     <Stack alignItems={'center'} sx={{ height: '95vh', overflowY: 'hidden' }}>
       <BackGround></BackGround>
-      <Stack
-        direction={'row'}
-        p={4}
-        justifyContent={'space-between'}
-        width={'80%'}
-      >
-        <Button
-          variant='contained'
-          sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        >
-          <Typography variant='h4'>הרשמה</Typography>
-        </Button>
-        <Button
-          variant='contained'
-          sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        >
-          <Typography variant='h4'>כניסה</Typography>
-        </Button>
-      </Stack>
+      <AppHeader></AppHeader>
+
       <Stack
         sx={{
           width: '70%',
@@ -47,7 +27,7 @@ const HomePage = () => {
         p={2}
         px={6}
       >
-        <Typography variant='h2'>BizQ</Typography>
+        <Typography variant='h5'>ביחרו את התחום הרצוי עבורכם </Typography>
         <Stack
           direction='row' // Set row direction for horizontal alignment
           spacing={4} // Space between cubes
@@ -60,6 +40,9 @@ const HomePage = () => {
           ))}{' '}
         </Stack>
         <Button
+          onClick={() => {
+            history.push(`/AllBusinessPage`);
+          }}
           variant='contained'
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         >

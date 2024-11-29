@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import BusinessPage from './pages/BusinessPage';
 import HomePage from './pages/HomePage';
+import AllBusinessPage from './pages/AllBusinessPage';
 
 function App() {
   return (
@@ -12,6 +13,9 @@ function App() {
           </Route>
           <Route path='/BusinessPage/:userId?' exact>
             <BusinessPage></BusinessPage>
+          </Route>
+          <Route path='/AllBusinessPage/:category?' exact>
+            <AllBusinessPage></AllBusinessPage>
           </Route>
         </Switch>
       </div>
