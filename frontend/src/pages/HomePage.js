@@ -8,6 +8,7 @@ import {
   Grid,
 } from '@mui/material';
 import BackGround from '../features/BackGround';
+import FrostedBackground from '../features/FrostedBackground';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
 
@@ -34,20 +35,10 @@ const HomePage = () => {
           <Typography variant='h4'>כניסה</Typography>
         </Button>
       </Stack>
-      <Stack
-        sx={{
-          width: '70%',
-          height: '100%',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          backgroundColor: '#FFFFFF60',
-          flex: '1',
-        }}
-        alignItems={'center'}
-        p={2}
-        px={6}
-      >
-        <Typography variant='h2'>BizQ</Typography>
+      <FrostedBackground>
+        <Typography variant='h1'>BizQ</Typography>
+        <Typography variant='h4'>פלטפורמת תזמון חכמה</Typography>
+        <Typography variant='h4'>מחברת עסקים ולקוחות בפתרון אחד פשוט</Typography>
         <Stack
           direction='row' // Set row direction for horizontal alignment
           spacing={4} // Space between cubes
@@ -65,7 +56,7 @@ const HomePage = () => {
         >
           <Typography variant='h5'>הצג הכל</Typography>
         </Button>
-      </Stack>
+      </FrostedBackground>
     </Stack>
   );
 };
