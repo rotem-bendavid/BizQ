@@ -1,33 +1,28 @@
 import React from 'react';
-import { Button, Typography, Stack } from '@mui/material';
-import BackGround from '../features/BackGround';
+import {
+  Button,
+  Typography,
+  Stack,
+  IconButton,
+  Card,
+  Grid,
+} from '@mui/material';
+import FrostedBackground from '../features/FrostedBackground';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import AppHeader from '../features/AppHeader';
 
 const HomePage = () => {
   const history = useHistory();
 
   return (
-    <Stack alignItems={'center'} sx={{ height: '95vh', overflowY: 'hidden' }}>
-      <BackGround></BackGround>
-      <AppHeader></AppHeader>
-
-      <Stack
-        sx={{
-          width: '70%',
-          height: '100%',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          backgroundColor: '#FFFFFF60',
-          flex: '1',
-        }}
-        alignItems={'center'}
-        p={2}
-        px={6}
-      >
-        <Typography variant='h5'>ביחרו את התחום הרצוי עבורכם </Typography>
+    <Stack alignItems={'center'} sx={{ height: '80vh', overflowY: 'hidden' }}>
+      <FrostedBackground>
+        <Typography variant='h1'>BizQ</Typography>
+        <Typography variant='h4'>פלטפורמת תזמון חכמה</Typography>
+        <Typography variant='h4'>
+          מחברת עסקים ולקוחות בפתרון אחד פשוט
+        </Typography>
         <Stack
           direction='row' // Set row direction for horizontal alignment
           spacing={4} // Space between cubes
@@ -48,7 +43,7 @@ const HomePage = () => {
         >
           <Typography variant='h5'>הצג הכל</Typography>
         </Button>
-      </Stack>
+      </FrostedBackground>
     </Stack>
   );
 };
