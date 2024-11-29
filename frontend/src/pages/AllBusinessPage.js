@@ -16,7 +16,6 @@ const AllBusinessPage = () => {
 
   return (
     <Stack alignItems={'center'} sx={{ height: '100%', overflow: 'hidden' }}>
-      <BackGround></BackGround>
       <Stack alignItems={'center'} p={2} spacing={2}>
         <Stack
           direction={'row'}
