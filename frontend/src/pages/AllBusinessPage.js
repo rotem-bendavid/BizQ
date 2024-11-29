@@ -10,15 +10,13 @@ import BackGround from '../features/BackGround';
 import WestIcon from '@mui/icons-material/West';
 import SearchIcon from '@mui/icons-material/Search';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import AppHeader from '../features/AppHeader';
 import BusinessComponent from '../features/AllBusinessPage/BusinessComponent';
 const AllBusinessPage = () => {
   const history = useHistory();
 
   return (
-    <Stack alignItems={'center'} sx={{ height: '95vh', overflow: 'hidden' }}>
+    <Stack alignItems={'center'} sx={{ height: '100%', overflow: 'hidden' }}>
       <BackGround></BackGround>
-      <AppHeader></AppHeader>
       <Stack alignItems={'center'} p={2} spacing={2}>
         <Stack
           direction={'row'}
@@ -67,7 +65,7 @@ const AllBusinessPage = () => {
         <Stack
           sx={{
             width: '100%',
-            height: '40vh',
+            height: '55vh',
             backdropFilter: 'blur(10px)',
             borderRadius: '20px',
             backgroundColor: '#FFFFFF90',
