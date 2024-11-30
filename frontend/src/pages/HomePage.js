@@ -36,7 +36,7 @@ const HomePage = () => {
         </Stack>
         <Button
           onClick={() => {
-            history.push(`/AllBusinessPage`);
+            history.push(`/FilterBusinessPage`);
           }}
           variant='contained'
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}

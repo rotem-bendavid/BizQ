@@ -6,12 +6,11 @@ import {
   Typography,
 } from '@mui/material';
 import React from 'react';
-import BackGround from '../features/BackGround';
 import WestIcon from '@mui/icons-material/West';
 import SearchIcon from '@mui/icons-material/Search';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import BusinessComponent from '../features/AllBusinessPage/BusinessComponent';
-const AllBusinessPage = () => {
+import BusinessComponent from '../features/FilterBusinessPage/BusinessComponent';
+const FilterBusinessPage = () => {
   const history = useHistory();
 
   return (
@@ -94,4 +93,4 @@ const AllBusinessPage = () => {
   );
 };
 
-export default AllBusinessPage;
+export default FilterBusinessPage;

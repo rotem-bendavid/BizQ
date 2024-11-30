@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavBar from './features/Generics/NavBar';
-import BusinessPage from './pages/BusinessPage';
+import SingUpPage from './pages/SingUpPage';
 import HomePage from './pages/HomePage';
-import AllBusinessPage from './pages/AllBusinessPage';
+import FilterBusinessPage from './pages/FilterBusinessPage';
 import BackGround from './features/BackGround';
 import LoginPage from './pages/Login';
 
@@ -24,14 +24,14 @@ function App() {
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
             <Route
-              path='/BusinessPage/:userId?'
+              path='/SingUpPage/:userId?'
               exact
-              component={BusinessPage}
+              component={SingUpPage}
             />
             <Route
-              path='/AllBusinessPage/:category?'
+              path='/FilterBusinessPage/:category?'
               exact
-              component={AllBusinessPage}
+              component={FilterBusinessPage}
             />
           </Switch>
         </div>

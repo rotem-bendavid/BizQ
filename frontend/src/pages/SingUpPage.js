@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Typography, Stack, IconButton } from '@mui/material';
 import WestIcon from '@mui/icons-material/West';
-import OptionInput from '../features/BusinessPage/OptionInput';
-import { WEEK_DAYS } from '../features/BusinessPage/data';
+import OptionInput from '../features/SingUpPage/OptionInput';
+import { WEEK_DAYS } from '../features/SingUpPage/data';
 import FrostedBackground from '../features/FrostedBackground';
 
-const BusinessPage = () => {
+const SingUpPage = () => {
   return (
     <Stack spacing={2} alignItems={'center'} sx={{}}>
       <FrostedBackground>
@@ -52,4 +52,4 @@ const BusinessPage = () => {
   );
 };
 
-export default BusinessPage;
+export default SingUpPage;
