@@ -18,7 +18,7 @@ const TopicCube = ({ topicObj }) => {
         },
       }}
       onClick={() => {
-        history.push(`/FilterBusinessPage/${topicObj.name}`);
+        history.push(`/FilterBusiness/${topicObj.name}`);
       }}
     >
       <img

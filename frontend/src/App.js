@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavBar from './features/Generics/NavBar';
-import SingUpPage from './pages/SingUpPage';
+import SignInPage from './pages/SignInPage';
 import HomePage from './pages/HomePage';
 import FilterBusinessPage from './pages/FilterBusinessPage';
 import BackGround from './features/BackGround';
-import LoginPage from './pages/Login';
+import LoginPage from './pages/LoginPage';
 
 function App() {
   return (
@@ -24,12 +24,12 @@ function App() {
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
             <Route
-              path='/SingUpPage/:userId?'
+              path='/SignIn/:userId?'
               exact
-              component={SingUpPage}
+              component={SignInPage}
             />
             <Route
-              path='/FilterBusinessPage/:category?'
+              path='/FilterBusiness/:category?'
               exact
               component={FilterBusinessPage}
             />
