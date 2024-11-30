@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavBar from './features/Generics/NavBar';
-import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import FilterBusinessPage from './pages/FilterBusinessPage';
 import BackGround from './features/BackGround';
@@ -24,9 +24,9 @@ function App() {
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
             <Route
-              path='/SignIn/:userId?'
+              path='/SignUp/:userId?'
               exact
-              component={SignInPage}
+              component={SignUpPage}
             />
             <Route
               path='/FilterBusiness/:category?'

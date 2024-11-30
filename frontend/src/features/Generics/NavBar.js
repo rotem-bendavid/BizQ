@@ -24,7 +24,7 @@ const NavBar = () => {
         variant="contained"
         sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         component={Link} // Use React Router's Link for navigation
-        to="/SignIn"
+        to="/SignUp"
       >
         <Typography variant="h5">הרשמה</Typography>
       </Button>

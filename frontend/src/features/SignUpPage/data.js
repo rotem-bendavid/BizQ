@@ -7,3 +7,4 @@ export const WEEK_DAYS = [
   'Friday',
   'Saturday',
 ];
+export const CATEGORIES = ['Beauty', 'Study', 'Treatment'];
