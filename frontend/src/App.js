@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import FilterBusinessPage from './pages/FilterBusinessPage';
 import BackGround from './features/BackGround';
 import LoginPage from './pages/LoginPage';
+import AppointmentPage from './pages/AppointmentPage';
 
 function App() {
   return (
@@ -23,16 +24,14 @@ function App() {
           <Switch>
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
-            <Route
-              path='/SignUp/:userId?'
-              exact
-              component={SignUpPage}
-            />
+
+            <Route path='/SignUp/:userId?' exact component={SignUpPage} />
             <Route
               path='/FilterBusiness/:category?'
               exact
               component={FilterBusinessPage}
             />
+            <Route path='/appointment' exact component={AppointmentPage} />
           </Switch>
         </div>
       </div>
