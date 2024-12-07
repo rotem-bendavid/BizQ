@@ -7,4 +7,4 @@ export const WEEK_DAYS = [
   'Friday',
   'Saturday',
 ];
-export const CATEGORIES = ['Beauty', 'Study', 'Treatment'];
+export const CATEGORIES = ['אסתטיקה', 'חינוך', 'כושר', 'שיער', 'בריאות'];
