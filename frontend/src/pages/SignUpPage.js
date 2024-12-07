@@ -13,11 +13,35 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { WEEK_DAYS, CATEGORIES } from '../features/SignUpPage/data';
 import FrostedBackground from '../features/FrostedBackground';
+import { registerBusiness } from '../api/RegisterApi';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignUpPage = () => {
+  const history = useHistory();
+
   const [services, setServices] = useState([{ name: '', price: '', time: '' }]);
   const [workingDays, setWorkingDays] = useState([]);
   const [workingHours, setWorkingHours] = useState({ from: '', to: '' });
+  const [businessData, setBusinessData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    businessName: '',
+    phone: '',
+    category: '',
+    description: '',
+    city: '',
+    street: '',
+    houseNumber: '',
+    floor: '',
+    apartment: '',
+  });
+
+  const handleInputChange = (field, value) => {
+    setBusinessData({ ...businessData, [field]: value });
+  };
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
@@ -41,34 +65,111 @@ const SignUpPage = () => {
     }
   };
 
+  const handleRegister = async () => {
+    const dataToSubmit = {
+      firstName: businessData.firstName,
+      lastName: businessData.lastName,
+      email: businessData.email,
+
+      businessName: businessData.businessName,
+      phone: businessData.phone,
+      category: businessData.category,
+      description: businessData.description,
+      address: {
+        city: businessData.city,
+        street: businessData.street,
+        houseNumber: businessData.houseNumber,
+        floor: businessData.floor,
+        apartment: businessData.apartment,
+      },
+      services,
+      workingDays,
+      workingHours,
+    };
+
+    const response = await registerBusiness(dataToSubmit);
+    if (response.success) {
+      //add register logic
+      history.push('/');
+    }
+  };
+
   return (
-    <Stack spacing={2} alignItems="center" sx={{ paddingBottom: 4 }}>
+    <Stack spacing={2} alignItems='center' sx={{ paddingBottom: 4 }}>
       <FrostedBackground>
-        <Typography variant="h3" mb={4}>
+        <Typography variant='h3' mb={4}>
           הרשמה לבעלי עסקים
         </Typography>
 
         {/* Personal Information Section */}
-        <Typography variant="h5">Personal Information</Typography>
+        <Typography variant='h5'>פרטים אישיים</Typography>
         <Stack spacing={2} mb={4}>
-          <TextField variant="outlined" label="First Name" fullWidth required />
-          <TextField variant="outlined" label="Last Name" fullWidth required />
-          <TextField variant="outlined" label="Email" fullWidth type="email" required />
-          <TextField variant="outlined" label="Password" fullWidth type="password" required />
-          <TextField variant="outlined" label="Confirm Password" fullWidth type="password" required />
+          <TextField
+            variant='outlined'
+            label='שם פרטי'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('firstName', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='שם משפחה'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('lastName', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='אימייל'
+            fullWidth
+            type='email'
+            required
+            onChange={(e) => handleInputChange('email', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='סיסמא'
+            fullWidth
+            type='password'
+            required
+            onChange={(e) => handleInputChange('password', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='אימות סיסמא'
+            fullWidth
+            type='password'
+            required
+            onChange={(e) =>
+              handleInputChange('confirmPassword', e.target.value)
+            }
+          />
         </Stack>
 
         {/* Business Information Section */}
-        <Typography variant="h5">Business Information</Typography>
+        <Typography variant='h5'>פרטי העסק</Typography>
         <Stack spacing={2} mb={4}>
-          <TextField variant="outlined" label="Business Name" fullWidth required />
-          <TextField variant="outlined" label="Phone Number" fullWidth required />
           <TextField
-            select
-            variant="outlined"
-            label="Category"
+            variant='outlined'
+            label='שם העסק'
             fullWidth
             required
+            onChange={(e) => handleInputChange('businessName', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='מספר טלפון'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('phone', e.target.value)}
+          />
+          <TextField
+            select
+            variant='outlined'
+            label='קטוגוריה'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('category', e.target.value)}
           >
             {CATEGORIES.map((category) => (
               <MenuItem key={category} value={category}>
@@ -77,24 +178,53 @@ const SignUpPage = () => {
             ))}
           </TextField>
           <TextField
-            variant="outlined"
-            label="Description"
+            variant='outlined'
+            label='תיאור העסק'
             fullWidth
             multiline
             rows={5}
+            onChange={(e) => handleInputChange('description', e.target.value)}
           />
-          <TextField variant="outlined" label="City" fullWidth required />
-          <TextField variant="outlined" label="Street" fullWidth required />
-          <TextField variant="outlined" label="Number" fullWidth required />
-          <TextField variant="outlined" label="Floor" fullWidth />
-          <TextField variant="outlined" label="Apt. Number" fullWidth />
+          <TextField
+            variant='outlined'
+            label='עיר'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('city', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='רחוב'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('street', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='מספר בית'
+            fullWidth
+            required
+            onChange={(e) => handleInputChange('houseNumber', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='קומה'
+            fullWidth
+            onChange={(e) => handleInputChange('floor', e.target.value)}
+          />
+          <TextField
+            variant='outlined'
+            label='מספר דירה'
+            fullWidth
+            onChange={(e) => handleInputChange('apartment', e.target.value)}
+          />
         </Stack>
 
         {/* Working Time Section */}
-        <Typography variant="h5">Working Time</Typography>
-        <Stack spacing={2} mb={4} alignItems="center">
-          <Typography>Choose Working Days</Typography>
-          <Stack direction="row" spacing={2} flexWrap="wrap">
+        <Typography variant='h5'>שעות עבודה</Typography>
+        <Stack spacing={2} mb={4} alignItems='center'>
+          <Typography>בחר ימי עבודה</Typography>
+          <Stack direction='row' spacing={2} flexWrap='wrap'>
             {WEEK_DAYS.map((day) => (
               <FormControlLabel
                 key={day}
@@ -108,21 +238,25 @@ const SignUpPage = () => {
               />
             ))}
           </Stack>
-          <Stack spacing={2} alignItems="center">
-            <Typography>Choose Working Hours</Typography>
-            <Stack direction="row" spacing={2} flexWrap="wrap">
+          <Stack spacing={2} alignItems='center'>
+            <Typography>בחר שעות עבודה</Typography>
+            <Stack direction='row' spacing={2} flexWrap='wrap'>
               <TextField
-                label="From"
-                type="time"
-                value={workingHours.from}
-                onChange={(e) => setWorkingHours({ ...workingHours, from: e.target.value })}
+                label='עד שעה'
+                type='time'
+                value={workingHours.to}
+                onChange={(e) =>
+                  setWorkingHours({ ...workingHours, to: e.target.value })
+                }
                 InputLabelProps={{ shrink: true }}
               />
               <TextField
-                label="To"
-                type="time"
-                value={workingHours.to}
-                onChange={(e) => setWorkingHours({ ...workingHours, to: e.target.value })}
+                label='משעה'
+                type='time'
+                value={workingHours.from}
+                onChange={(e) =>
+                  setWorkingHours({ ...workingHours, from: e.target.value })
+                }
                 InputLabelProps={{ shrink: true }}
               />
             </Stack>
@@ -130,44 +264,59 @@ const SignUpPage = () => {
         </Stack>
 
         {/* Services Section */}
-        <Typography variant="h5">Services</Typography>
+        <Typography variant='h5'>שירותים</Typography>
         <Stack spacing={2} mb={4}>
           {services.map((service, index) => (
-            <Stack key={index} direction="row" spacing={2} alignItems="center">
+            <Stack key={index} direction='row' spacing={2} alignItems='center'>
               <TextField
-                label="Service Name"
-                variant="outlined"
+                label='שם טיפול'
+                variant='outlined'
                 value={service.name}
-                onChange={(e) => handleServiceChange(index, 'name', e.target.value)}
+                onChange={(e) =>
+                  handleServiceChange(index, 'name', e.target.value)
+                }
               />
               <TextField
-                label="Price"
-                variant="outlined"
-                type="number"
+                label='מחיר'
+                variant='outlined'
+                type='number'
                 value={service.price}
-                onChange={(e) => handleServiceChange(index, 'price', e.target.value)}
+                onChange={(e) =>
+                  handleServiceChange(index, 'price', e.target.value)
+                }
               />
               <TextField
-                label="Time (Minutes)"
-                variant="outlined"
-                type="number"
+                label='זמן בדקות'
+                variant='outlined'
+                type='number'
                 value={service.time}
-                onChange={(e) => handleServiceChange(index, 'time', e.target.value)}
+                onChange={(e) =>
+                  handleServiceChange(index, 'time', e.target.value)
+                }
               />
               <IconButton onClick={() => removeService(index)}>
                 <RemoveCircleIcon />
               </IconButton>
             </Stack>
           ))}
-          <Button startIcon={<AddCircleIcon />} onClick={addService} variant="contained">
+          <Button
+            startIcon={<AddCircleIcon />}
+            onClick={addService}
+            variant='contained'
+          >
             Add Service
           </Button>
         </Stack>
 
         {/* Submit Button */}
-        <Stack alignItems="center">
-          <Button variant="contained" color="primary" sx={{ width: '200px' }}>
-            Submit
+        <Stack alignItems='center'>
+          <Button
+            variant='contained'
+            color='primary'
+            sx={{ width: '200px' }}
+            onClick={handleRegister}
+          >
+            Register
           </Button>
         </Stack>
       </FrostedBackground>
