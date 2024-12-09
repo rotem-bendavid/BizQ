@@ -8,20 +8,19 @@ import {
   IconButton,
   Checkbox,
   FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { WEEK_DAYS, CATEGORIES } from '../features/SignUpPage/data';
 import FrostedBackground from '../features/FrostedBackground';
 import { registerBusiness } from '../api/RegisterApi';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignUpPage = () => {
-  const history = useHistory();
-
   const [services, setServices] = useState([{ name: '', price: '', time: '' }]);
   const [workingDays, setWorkingDays] = useState([]);
   const [workingHours, setWorkingHours] = useState({ from: '', to: '' });
+  const [isLoading, setIsLoading] = useState(false);
   const [businessData, setBusinessData] = useState({
     firstName: '',
     lastName: '',
@@ -66,15 +65,39 @@ const SignUpPage = () => {
   };
 
   const handleRegister = async () => {
-    const dataToSubmit = {
-      firstName: businessData.firstName,
-      lastName: businessData.lastName,
-      email: businessData.email,
+    // Validate required fields
+    const requiredFields = [
+      { field: 'firstName', label: 'שם פרטי' },
+      { field: 'lastName', label: 'שם משפחה' },
+      { field: 'email', label: 'אימייל' },
+      { field: 'password', label: 'סיסמא' },
+      { field: 'confirmPassword', label: 'אימות סיסמא' },
+      { field: 'businessName', label: 'שם העסק' },
+      { field: 'phone', label: 'מספר טלפון' },
+      { field: 'category', label: 'קטגוריה' },
+      { field: 'city', label: 'עיר' },
+      { field: 'street', label: 'רחוב' },
+      { field: 'houseNumber', label: 'מספר בית' },
+    ];
 
-      businessName: businessData.businessName,
-      phone: businessData.phone,
-      category: businessData.category,
-      description: businessData.description,
+    const missingFields = requiredFields.filter(
+      ({ field }) => !businessData[field]?.trim()
+    );
+
+    if (missingFields.length > 0) {
+      alert(`אנא מלאו את הערך בשדה ${missingFields[0].label} `);
+      return;
+    }
+
+    // Additional validation: passwords match
+    if (businessData.password !== businessData.confirmPassword) {
+      alert('הסיסמאות אינן זהות');
+      return;
+    }
+    setIsLoading(true);
+    // Proceed with form submission
+    const dataToSubmit = {
+      ...businessData,
       address: {
         city: businessData.city,
         street: businessData.street,
@@ -87,11 +110,18 @@ const SignUpPage = () => {
       workingHours,
     };
 
-    const response = await registerBusiness(dataToSubmit);
-    if (response.success) {
-      //add register logic
-      history.push('/');
+    try {
+      const response = await registerBusiness(dataToSubmit);
+
+      if (response.success) {
+        localStorage.setItem('userId', response?.data?.userId);
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.error(error);
+      alert('קרתה שגיאה בתהליך ההרשמה נסו שוב');
     }
+    setIsLoading(false);
   };
 
   return (
@@ -304,7 +334,7 @@ const SignUpPage = () => {
             onClick={addService}
             variant='contained'
           >
-            Add Service
+            הוספת טיפול
           </Button>
         </Stack>
 
@@ -316,7 +346,14 @@ const SignUpPage = () => {
             sx={{ width: '200px' }}
             onClick={handleRegister}
           >
-            Register
+            {isLoading ? (
+              <CircularProgress
+                size={24}
+                sx={{ color: 'white' }}
+              ></CircularProgress>
+            ) : (
+              'הרשמה'
+            )}
           </Button>
         </Stack>
       </FrostedBackground>

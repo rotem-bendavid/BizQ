@@ -2,7 +2,8 @@ const admin = require('firebase-admin'); // Assuming you have initialized fireba
 
 const db = admin.firestore();
 
-const registerBusiness = async (businessData) => {
+const registerBusiness = async (req, res) => {
+  const businessData = req.body;
   const { email, password, ...businessDetails } = businessData;
 
   try {
@@ -22,11 +23,7 @@ const registerBusiness = async (businessData) => {
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
-    return {
-      success: true,
-      message: 'Business registered successfully',
-      data: { userId: userId },
-    };
+    return res.status(200).json({ success: true, data: { userId } });
   } catch (error) {
     console.error('Error registering business:', error);
 
@@ -48,7 +45,10 @@ const registerBusiness = async (businessData) => {
       errorMessage = 'You do not have permission to perform this operation.';
     }
 
-    throw { statusCode, errorMessage }; // Pass the error with code and message
+    return res.status(statusCode).json({
+      success: false,
+      message: errorMessage,
+    }); // Pass the error with code and message
   }
 };
 

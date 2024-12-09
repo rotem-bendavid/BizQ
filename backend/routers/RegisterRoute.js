@@ -1,8 +1,8 @@
 const express = require('express');
-const registerBusinessController = require('../controller/RegisterController');
+const { registerBusiness } = require('../services/RegisterService');
 
 const router = express.Router();
 
-router.post('/', registerBusinessController);
+router.post('/', registerBusiness);
 
 module.exports = router;
