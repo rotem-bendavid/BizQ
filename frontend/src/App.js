@@ -7,6 +7,7 @@ import FilterBusinessPage from './pages/FilterBusinessPage';
 import BackGround from './features/BackGround';
 import LoginPage from './pages/LoginPage';
 import AppointmentPage from './pages/AppointmentPage';
+import BusinessOwnerPage from './pages/BusinessOwnerPage';
 
 function App() {
   return (
@@ -32,6 +33,11 @@ function App() {
               component={FilterBusinessPage}
             />
             <Route path='/appointment' exact component={AppointmentPage} />
+            <Route
+              path='/BusinessOwner/:id'
+              exact
+              component={BusinessOwnerPage}
+            />
           </Switch>
         </div>
       </div>
