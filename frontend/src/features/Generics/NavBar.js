@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack, Button, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { logOut, useIsLoggedIn } from '../../utils/auth';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const NavBar = () => {
+  const isLoggedIn = useIsLoggedIn();
+  const history = useHistory();
+  useEffect(() => {}, [isLoggedIn]);
   return (
     <Stack
       direction={'row'}
@@ -11,8 +16,8 @@ const NavBar = () => {
       sx={{
         position: 'fixed', // Make navbar fixed
         top: 0,
-        left: '50%',  // Move the navbar to the center horizontally
-        transform: 'translateX(-50%)',  // Correct the offset of 50% left by shifting it back
+        left: '50%', // Move the navbar to the center horizontally
+        transform: 'translateX(-50%)', // Correct the offset of 50% left by shifting it back
         height: '10vh', // Set navbar height to 10%
         zIndex: 1000, // Ensure navbar stays above other content
         display: 'flex',
@@ -21,32 +26,39 @@ const NavBar = () => {
       }}
     >
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        component={Link} // Use React Router's Link for navigation
-        to="/SignUp"
+        onClick={() => {
+          if (isLoggedIn) logOut();
+          else history.push('/signup');
+        }}
       >
-        <Typography variant="h5">הרשמה</Typography>
+        <Typography variant='h5'>{isLoggedIn ? 'התנתקות' : 'הרשמה'}</Typography>
       </Button>
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        component={Link} // Use React Router's Link for navigation
-        to="/"
+        onClick={() => {
+          history.push('/');
+        }}
       >
         <img
-          src="../static/nav/home-image.png" // Provide the correct image path
-          alt="BizQ Home" // Alt text for the image
+          src='../static/nav/home-image.png' // Provide the correct image path
+          alt='BizQ Home' // Alt text for the image
           style={{ maxWidth: '100%', height: 'auto', borderRadius: '20px' }} // Style the image as needed
         />
       </Button>
       <Button
-        variant="contained"
+        variant='contained'
         sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        component={Link} // Use React Router's Link for navigation
-        to="/Login"
+        onClick={() => {
+          if (isLoggedIn) history.push('/');
+          else history.push('/login');
+        }}
       >
-        <Typography variant="h5">כניסה</Typography>
+        <Typography variant='h5'>
+          {isLoggedIn ? 'העסק שלי' : 'כניסה'}
+        </Typography>
       </Button>
     </Stack>
   );
