@@ -2,7 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import OptionComponent from './OptionComponent';
 
-const OptionsSection = () => {
+const OptionsSection = ({ selectedTypeId, onTypeSelect }) => {
   return (
     <Stack spacing={1}>
       <Typography variant='h2'>מוצרים לבחירה</Typography>
@@ -26,8 +26,10 @@ const OptionsSection = () => {
       >
         {Array.from({ length: 10 }).map((_, index) => (
           <OptionComponent
-            optionObj={{ name: "מניקור ג'ל", price: 100 }}
-          ></OptionComponent>
+            key={index}
+            optionObj={{ id: index, name: "מניקור ג'ל", price: 100 }}
+            onSelect={onTypeSelect} // Pass the callback to handle selection
+          />
         ))}
       </Stack>
     </Stack>

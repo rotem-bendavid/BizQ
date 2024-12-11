@@ -5,8 +5,8 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-const ScheduleSection = () => {
-  const [selectedDate, setSelectedDate] = useState(dayjs(new Date()));
+const ScheduleSection = ({ selectedDate, onDateSelect }) => {
+  // const [selectedDate, setSelectedDate] = useState(dayjs(new Date()));
 
   return (
     <Stack spacing={-2} alignItems='center'>
@@ -14,9 +14,10 @@ const ScheduleSection = () => {
       <Stack sx={{ scale: '0.8' }} alignItems={'start'}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <StaticDatePicker
-            value={selectedDate}
+            value={selectedDate} // TODO: it is not working, fix
             onChange={(newValue) => {
-              setSelectedDate(newValue);
+              const formattedDate = dayjs(newValue).format('DD/MM/YYYY');
+              onDateSelect(formattedDate);
             }}
             slotProps={{
               textField: { variant: 'standard' },

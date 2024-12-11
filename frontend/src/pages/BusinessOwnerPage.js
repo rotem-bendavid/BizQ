@@ -15,7 +15,7 @@
 
 import { Box, Typography, Divider, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { SocialMediaIcons, BusinessOwnerContainer, AboutUs, ScheduleButton, ImagesGrid } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
 import { DATA } from '../features/BusinessOwnersPage/BusinessOwnersData';
 
@@ -24,6 +24,7 @@ const BusinessOwnerPage = () => {
   const { id } = useParams(); // Get BusinessOwners ID from URL
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const history = useHistory(); 
 
   useEffect(() => {
     const ownerId = parseInt(id, 10);
@@ -52,6 +53,10 @@ const BusinessOwnerPage = () => {
 
   }
 
+  const handleScheduleAppointment = () => {
+    history.push(`/appointment/${id}`); // Navigate to the desired route
+  };
+
 
   return (
     <BusinessOwnerContainer sx={{ width: '80%' }}>
@@ -79,7 +84,7 @@ const BusinessOwnerPage = () => {
       <AboutUs aboutUs={data.aboutUs} />
 
       {/* Schedule Button */}
-      <ScheduleButton onClick={() => console.log('Schedule button clicked!')} />
+      <ScheduleButton onClick={handleScheduleAppointment} />
 
 
 

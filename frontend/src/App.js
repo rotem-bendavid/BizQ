@@ -25,19 +25,18 @@ function App() {
           <Switch>
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
-
             <Route path='/SignUp/:userId?' exact component={SignUpPage} />
             <Route
               path='/FilterBusiness/:category?'
               exact
               component={FilterBusinessPage}
             />
-            <Route path='/appointment' exact component={AppointmentPage} />
             <Route
               path='/BusinessOwner/:id'
               exact
               component={BusinessOwnerPage}
             />
+            <Route path='/Appointment/:id' exact component={AppointmentPage} />
           </Switch>
         </div>
       </div>
