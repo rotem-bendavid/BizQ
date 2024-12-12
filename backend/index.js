@@ -10,6 +10,7 @@ const cors = require('cors'); // Import cors
 const express = require('express');
 const bodyParser = require('body-parser');
 const registerRoutes = require('./routers/RegisterRoute');
+const scheduleAppointmentRoutes = require('./routers/ScheduleAppointmentRoute');
 
 // Firebase Admin initialization
 
@@ -26,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Routes
 app.use('/register', registerRoutes);
+app.use('/scheduleappointment', scheduleAppointmentRoutes);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

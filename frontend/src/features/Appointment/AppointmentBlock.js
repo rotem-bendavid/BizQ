@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import OptionsSection from './OptionsSection';
 import ScheduleSection from './ScheduleSection';
 import AppointmentTimeSelection from './AppointmentTimeSelection';
@@ -7,13 +7,18 @@ import AppointmentSummary from './AppointmentSummary';
 import { Button, Stack } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import { scheduleAppointment } from '../../api/ScheduleAppointment';
 
 const AppointmentBlock = () => {
+  const { id } = useParams(); // Get BusinessOwners ID from URL
   const [currentSection, setCurrentSection] = useState(0);
   const history = useHistory(); // Use history for navigation
 
   // Centralized state to store user choices
   const [appointmentData, setAppointmentData] = useState({
+    clientName: null,
+    clientMail: null,
+    clientPhone: null,
     typeName: null,
     typeId: null,
     date: null,
@@ -30,25 +35,37 @@ const AppointmentBlock = () => {
     
     // Validate required fields
     const requiredFields = [
-      { field: 'typeId', label: 'סוג פגישה' },
+      { field: 'typeId', label: 'בחירה מוצר' },
       { field: 'date', label: 'תאריך' },
       { field: 'time', label: 'שעה' },
+      { field: 'clientName', label: 'שם הלקוח' },
+      { field: 'clientMail', label: 'מייל הלקוח' },
+      { field: 'clientPhone', label: 'טלפון הלקוח' },
     ];
 
-    // ROTEM TODO: make it work
-    const missingFields = requiredFields.filter(({ field }) => !appointmentData[field]?.trim());
+    const missingFields = requiredFields.filter(({ field }) => {
+      const value = appointmentData[field];
+      return value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+    });
 
     if (missingFields.length > 0) {
-      alert(`אנא מלאו את הערך בשדה ${missingFields[0].label}`);
+      alert(`אנא מלאו את הערך בשדה: ${missingFields[0].label}`);
       return;
     }
 
+    const dataToSubmit = {
+      businessId: id,
+      ...appointmentData
+    };
+
     // Submit the appointment data
     try {
-      // Mock API call - Replace with actual API logic
-      console.log('Submitting appointment data:', appointmentData);
-      alert('Appointment Scheduled Successfully!');
-      history.push('/appointments'); // Navigate to another page after successful submission
+      const response = await scheduleAppointment(dataToSubmit);
+
+      if (response.success) {
+        alert('Appointment Scheduled Successfully!');
+        window.location.href = '/';
+      }
     } catch (error) {
       console.error(error);
       alert('קרתה שגיאה בתהליך קביעת הפגישה. נסו שנית');
@@ -77,7 +94,13 @@ const AppointmentBlock = () => {
       selectedDate={appointmentData.date} 
       selectedTime={appointmentData.time}
       specialRequest={appointmentData.comment}
+      clientName={appointmentData.clientName}
+      clientMail={appointmentData.clientMail}
+      clientPhone={appointmentData.clientPhone}
       onSpecialRequestChange={(comment) => setAppointmentData((prev) => ({ ...prev, comment }))}
+      onClientNameChange={(name) => setAppointmentData((prev) => ({ ...prev, clientName: name }))}
+      onClientMailChange={(mail) => setAppointmentData((prev) => ({ ...prev, clientMail: mail }))}
+      onClientPhoneChange={(phone) => setAppointmentData((prev) => ({ ...prev, clientPhone: phone }))}
       onSubmit={handleSubmit}
     />,
   ];
