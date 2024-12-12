@@ -3,6 +3,8 @@ import React from 'react';
 import OptionComponent from './OptionComponent';
 
 const OptionsSection = ({ selectedTypeId, onTypeSelect }) => {
+
+  // TODO: view the selectedTypeId
   return (
     <Stack spacing={1}>
       <Typography variant='h2'>מוצרים לבחירה</Typography>

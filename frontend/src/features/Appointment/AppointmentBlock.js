@@ -74,20 +74,30 @@ const AppointmentBlock = () => {
 
   const sections = [
     <OptionsSection
+      selectedTypeId={appointmentData.typeId}
       onTypeSelect={(typeId, typeName) => {
         setAppointmentData((prev) => ({
           ...prev, 
           typeId, 
           typeName, // Set both typeId and typeName at the same time
         }));
+        setCurrentSection((prev) => prev + 1);
       }}
     />,
     <ScheduleSection 
-      onDateSelect={(date) => setAppointmentData((prev) => ({ ...prev, date }))}
+      selectedDate={appointmentData.date} 
+      onDateSelect={(date) => {
+        setAppointmentData((prev) => ({ ...prev, date }));
+        setCurrentSection((prev) => prev + 1);
+      }}
     />,
     <AppointmentTimeSelection 
       selectedDate={appointmentData.date} 
-      onTimeSelect={(time) => setAppointmentData((prev) => ({ ...prev, time }))}
+      selectedTime={appointmentData.time}
+      onTimeSelect={(time) => {
+        setAppointmentData((prev) => ({ ...prev, time }));
+        setCurrentSection((prev) => prev + 1); // Move to next section after selection
+      }}
     />,
     <AppointmentSummary
       selectedOption={appointmentData.typeName}
