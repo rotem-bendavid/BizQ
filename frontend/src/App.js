@@ -32,12 +32,12 @@ function App() {
               exact
               component={FilterBusinessPage}
             />
-            <Route path='/appointment' exact component={AppointmentPage} />
             <Route
               path='/BusinessOwner/:id'
               exact
               component={BusinessOwnerPage}
             />
+            <Route path='/appointment' exact component={AppointmentPage} />
           </Switch>
         </div>
       </div>

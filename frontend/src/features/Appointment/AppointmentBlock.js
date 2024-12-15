@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import OptionsSection from './OptionsSection';
 import ScheduleSection from './ScheduleSection';
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
-const AppointmentBlock = () => {
+const AppointmentBlock = ({ userId }) => {
   const [currentSection, setCurrentSection] = useState(0);
+
   const sections = [
-    <OptionsSection></OptionsSection>,
-    <ScheduleSection></ScheduleSection>,
+    <OptionsSection userId={userId} />,
+    <ScheduleSection />,
   ];
 
   return (
@@ -21,21 +22,19 @@ const AppointmentBlock = () => {
       width={'100%'}
     >
       <Button
-        variant='contained'
-        onClick={() => {
-          setCurrentSection(currentSection - 1);
-        }}
+        variant="contained"
+        onClick={() => setCurrentSection((prev) => Math.max(prev - 1, 0))}
+        disabled={currentSection === 0}
       >
-        <ArrowCircleLeftIcon></ArrowCircleLeftIcon>{' '}
+        <ArrowCircleLeftIcon />
       </Button>
       {sections[currentSection]}
       <Button
-        variant='contained'
-        onClick={() => {
-          setCurrentSection(currentSection + 1);
-        }}
+        variant="contained"
+        onClick={() => setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1))}
+        disabled={currentSection === sections.length - 1}
       >
-        <ArrowCircleRightIcon></ArrowCircleRightIcon>
+        <ArrowCircleRightIcon />
       </Button>
     </Stack>
   );

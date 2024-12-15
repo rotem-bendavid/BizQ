@@ -1,39 +1,45 @@
 /** 
  * TO DO LIST: (MISS HERE)
- * BusinessOwners table
  * 
- * BusinessOwners functions (getBusinessOwners,setBusinessOwners,isBusinessOwners)
- * 
- * DELETE Url address from the insta and facebook (also, add it to data)
- *    also, add the null feature (from signup form)
- * 
- * ADD navigation to next page while clicking on "schedule"
- * 
- * ALLOWS DYNAMIC LINKS TO SOCIAL MEDIA DATABASE FROM BUSINESS OWNERS SIGN IN REGISTERATION
- * 
+ * ADD IN THE REGISTERATION PAGE THE SOCIALS MEDIA NAMES
 */
 
 import { Box, Typography, Divider, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { SocialMediaIcons, BusinessOwnerContainer, AboutUs, ScheduleButton, ImagesGrid } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
-import { DATA } from '../features/BusinessOwnersPage/BusinessOwnersData';
+import { useParams, useHistory } from 'react-router-dom';
+import { SocialMediaIcons, BusinessOwnerContainer, ScheduleButton, ImagesGrid } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
+import { doc, getDoc } from 'firebase/firestore';
+import db from '../firebase';
 
 
-const BusinessOwnerPage = () => {
-  const { id } = useParams(); // Get BusinessOwners ID from URL
+const BusinessOwnerPage = ({ userId }) => {
+  const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
-    const ownerId = parseInt(id, 10);
-    const ownerData = DATA.find((owner) => owner.id === ownerId);
+    const fetchBusinessData = async () => {
+      try {
+        const docRef = doc(db, 'businesses', userId || id);
+        const docSnap = await getDoc(docRef);
 
-    setTimeout(() => {
-      setData(ownerData || null);
-      setLoading(false);
-    }, 500);
-  }, [id]);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setData(data);
+        } else {
+          setError('לא נמצא בעל עסק');
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBusinessData();
+  }, [userId, id]);
 
   if (loading) {
     return (
@@ -43,21 +49,19 @@ const BusinessOwnerPage = () => {
     );
   }
 
-  if (!data) {
+  if (error) {
     return (
-      <Typography variant="h6" align="center" mt={4}>
-        Business Owner not found.
+      <Typography variant="h6" align="center" color="error" mt={4}>
+        שגיאה בטעינת הנתונים: {error}
       </Typography>
     );
-
   }
-
 
   return (
     <BusinessOwnerContainer sx={{ width: '80%' }}>
       {/* Business Owner Name */}
       <Typography variant="h4" gutterBottom>
-        {data.name}
+        {data.businessName}
       </Typography>
 
       {/* Divider */}
@@ -65,55 +69,35 @@ const BusinessOwnerPage = () => {
 
       {/* Location */}
       <Typography variant="body1" color="textSecondary" gutterBottom>
-        {data.location}
+        {data.address.city +',' + data.address.street +',' + data.address.houseNumber}
       </Typography>
 
-
       {/* Social Media */}
-      <SocialMediaIcons socialMedia={data.socialMedia} name={data.name} />
+      <SocialMediaIcons socialsMedia={data.socialsMedia || {}} name={data.name} />
 
       {/* Divider */}
       <Divider sx={{ my: 1 }} />
 
       {/* About Us */}
-      <AboutUs aboutUs={data.aboutUs} />
+      <div>
+        <Typography variant="h5" gutterBottom>
+          אודות
+        </Typography>
+        <Typography variant="body1" style={{ textAlign: 'center', marginTop: '10px' }}>
+          {data.description || 'אין תיאור'}
+        </Typography>
+      </div>
 
       {/* Schedule Button */}
-      <ScheduleButton onClick={() => console.log('Schedule button clicked!')} />
-
-
-
+      <ScheduleButton
+        onClick={() => history.push('/appointment', { userId: id })}
+      />
 
       {/* Images */}
-      <ImagesGrid images={data.images} />
-
+      <ImagesGrid images={data.images || []} />
     </BusinessOwnerContainer>
+    
   );
 };
-
-/*
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/BusinessOwners/${id}`); // Replace the id endpoint
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const ownerData = await response.json();
-        setData(ownerData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id]);
-*/
-
-
 
 export default BusinessOwnerPage;
