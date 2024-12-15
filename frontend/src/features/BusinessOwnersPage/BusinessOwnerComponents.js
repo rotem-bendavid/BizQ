@@ -10,7 +10,7 @@ export const BusinessOwnerContainer = ({ children, sx }) => (
                 mt: 4,
                 p: 2,
                 width: '70%',
-                height: '60vh',
+                minHeight: '20vh',
                 backdropFilter: 'blur(10px)',
                 borderRadius: '20px',
                 backgroundColor: '#FFFFFF90',
@@ -29,12 +29,12 @@ export const BusinessOwnerContainer = ({ children, sx }) => (
     </Container>
 );
 
-export const SocialMediaIcons = ({ socialMedia, name }) => (
+export const SocialMediaIcons = ({ socialsMedia, name }) => (
     <Box display="flex" justifyContent="center" gap={1}>
-        {socialMedia.facebook && (
+        {socialsMedia.facebook && (
             <IconButton
                 color="primary"
-                href={`https://www.facebook.com/${encodeURIComponent(socialMedia.facebook)}`}
+                href={`https://www.facebook.com/${encodeURIComponent(socialsMedia.facebook)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"
@@ -43,10 +43,10 @@ export const SocialMediaIcons = ({ socialMedia, name }) => (
             </IconButton>
         )}
 
-        {socialMedia.instagram && (
+        {socialsMedia.instagram && (
             <IconButton
                 color="secondary"
-                href={`https://www.instagram.com/${encodeURIComponent(socialMedia.instagram)}`}
+                href={`https://www.instagram.com/${encodeURIComponent(socialsMedia.instagram)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -67,9 +67,9 @@ export const SocialMediaIcons = ({ socialMedia, name }) => (
             />
 
         </IconButton>
-        <IconButton
+        { socialsMedia.googleMaps && <IconButton
             color="secondery"
-            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`}
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(socialsMedia.googleMaps)}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Google Maps"
@@ -79,7 +79,7 @@ export const SocialMediaIcons = ({ socialMedia, name }) => (
                 alt="Waze"
                 style={{ width: 26, height: 26 }}
             />
-        </IconButton>
+        </IconButton>}
     </Box>
 )
 
@@ -124,7 +124,7 @@ export const ImagesGrid = ({ images }) => (
           <Grid item xs={6} sm={3} key={index}>
             <img
               src={image}
-              alt={`Image ${index + 1}`}
+              alt={""}
               loading="lazy"
               style={{
                 width: '100%',
