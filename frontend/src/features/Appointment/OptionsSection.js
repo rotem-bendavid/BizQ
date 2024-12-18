@@ -6,8 +6,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Typography, CircularProgress } from '@mui/material';
 import OptionComponent from './OptionComponent';
+import { db } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import db from '../../firebase';
 
 const OptionsSection = ({ userId }) => {
   const [services, setServices] = useState([]);
@@ -40,26 +40,22 @@ const OptionsSection = ({ userId }) => {
   }, [userId]);
 
   /**
-    * const handleServiceClick = (service) => {
-    *   // Add logic here
-    * };
-    */
+   * const handleServiceClick = (service) => {
+   *   // Add logic here
+   * };
+   */
 
   if (loading) {
     return <CircularProgress />;
   }
 
   if (error) {
-    return (
-      <Typography color="error">
-        שגיאה בטעינת הנתונים: {error}
-      </Typography>
-    );
+    return <Typography color='error'>שגיאה בטעינת הנתונים: {error}</Typography>;
   }
 
   return (
-    <Stack spacing={2} alignItems="center">
-      <Typography variant="h4" gutterBottom>
+    <Stack spacing={2} alignItems='center'>
+      <Typography variant='h4' gutterBottom>
         מוצרים לבחירה
       </Typography>
       <Stack

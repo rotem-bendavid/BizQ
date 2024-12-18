@@ -52,12 +52,12 @@ const NavBar = () => {
         variant='contained'
         sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         onClick={() => {
-          if (isLoggedIn) history.push('/');
+          if (isLoggedIn) history.push(`/SchedulerPage`);
           else history.push('/login');
         }}
       >
         <Typography variant='h5'>
-          {isLoggedIn ? 'העסק שלי' : 'כניסה'}
+          {isLoggedIn ? 'היומן שלי' : 'כניסה'}
         </Typography>
       </Button>
     </Stack>

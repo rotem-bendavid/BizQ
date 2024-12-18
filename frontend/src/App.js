@@ -8,6 +8,7 @@ import BackGround from './features/BackGround';
 import LoginPage from './pages/LoginPage';
 import AppointmentPage from './pages/AppointmentPage';
 import BusinessOwnerPage from './pages/BusinessOwnerPage';
+import SchedulerPage from './pages/SchedulerPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Switch>
             <Route path='/' exact component={HomePage} />
             <Route path='/Login' exact component={LoginPage} />
+            <Route path='/SchedulerPage' exact component={SchedulerPage} />
 
             <Route path='/SignUp/:userId?' exact component={SignUpPage} />
             <Route
