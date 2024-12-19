@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import NavBar from './features/Generics/NavBar';
 import SignUpPage from './pages/SignUpPage';
@@ -9,8 +9,12 @@ import LoginPage from './pages/LoginPage';
 import AppointmentPage from './pages/AppointmentPage';
 import BusinessOwnerPage from './pages/BusinessOwnerPage';
 import SchedulerPage from './pages/SchedulerPage';
+import { getLocationByIP } from './api/Location';
 
 function App() {
+  useEffect(() => {
+    getLocationByIP();
+  }, []);
   return (
     <Router>
       <BackGround />
