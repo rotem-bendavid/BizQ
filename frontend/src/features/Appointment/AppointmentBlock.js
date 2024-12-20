@@ -10,7 +10,7 @@ import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { scheduleAppointment } from '../../api/ScheduleAppointment';
 
 const AppointmentBlock = () => {
-  const { id } = useParams(); // Get BusinessOwners ID from URL
+  const { id } = useParams(); // Get BusinessOwners ID from URL  
   const [currentSection, setCurrentSection] = useState(0);
   const history = useHistory(); // Use history for navigation
 
@@ -74,12 +74,13 @@ const AppointmentBlock = () => {
 
   const sections = [
     <OptionsSection
+      userId={id}
       selectedTypeId={appointmentData.typeId}
       onTypeSelect={(typeId, typeName) => {
         setAppointmentData((prev) => ({
           ...prev, 
           typeId, 
-          typeName, // Set both typeId and typeName at the same time
+          typeName,
         }));
         setCurrentSection((prev) => prev + 1);
       }}

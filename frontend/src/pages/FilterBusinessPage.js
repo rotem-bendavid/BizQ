@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 import WestIcon from '@mui/icons-material/West';
 import SearchIcon from '@mui/icons-material/Search';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -14,7 +14,7 @@ import FrostedBackground from '../features/FrostedBackground';
 
 const FilterBusinessPage = () => {
   const history = useHistory();
-
+  const [location, setLocation] = useState(localStorage.getItem('currentCity'));
   return (
     <Stack alignItems={'center'} sx={{ height: '90%', overflow: 'hidden' }}>
       <FrostedBackground>
@@ -40,7 +40,9 @@ const FilterBusinessPage = () => {
               //   history.goBack();
               // }}
             >
-              <SearchIcon sx={{ fontSize: '30px', color: 'black' }}></SearchIcon>
+              <SearchIcon
+                sx={{ fontSize: '30px', color: 'black' }}
+              ></SearchIcon>
             </IconButton>
             <Stack
               sx={{
@@ -60,6 +62,7 @@ const FilterBusinessPage = () => {
                     border: 'none',
                   },
                 }}
+                value={location}
               ></TextField>
             </Stack>
           </Stack>
