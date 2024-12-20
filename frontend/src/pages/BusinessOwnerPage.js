@@ -6,16 +6,10 @@
 
 import { Box, Typography, Divider, CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import {
-  SocialMediaIcons,
-  BusinessOwnerContainer,
-  ScheduleButton,
-  ImagesGrid,
-} from '../features/BusinessOwnersPage/BusinessOwnerComponents';
+import { useHistory, useParams } from 'react-router-dom';
+import { SocialMediaIcons, BusinessOwnerContainer, AboutUs, ScheduleButton, ImagesGrid } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useIsLoggedIn } from '../utils/auth';
 
 const BusinessOwnerPage = ({ userId }) => {
   const { id } = useParams();
@@ -23,7 +17,6 @@ const BusinessOwnerPage = ({ userId }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const history = useHistory();
-  const myUserId = useIsLoggedIn();
   useEffect(() => {
     const fetchBusinessData = async () => {
       try {
@@ -67,6 +60,11 @@ const BusinessOwnerPage = ({ userId }) => {
     );
   }
 
+  const handleScheduleAppointment = () => {
+    history.push(`/Appointment/${id}`); // Navigate to the desired route
+  };
+
+
   return (
     <BusinessOwnerContainer sx={{ width: '80%' }}>
       {/* Business Owner Name */}
@@ -109,10 +107,7 @@ const BusinessOwnerPage = ({ userId }) => {
       </div>
 
       {/* Schedule Button */}
-      <ScheduleButton
-        onClick={() => history.push('/appointment', { userId: id })}
-        text={myUserId === id ? 'עריכת עמוד העסק' : 'קבע תור'}
-      />
+      <ScheduleButton onClick={handleScheduleAppointment} text="הזמן"/>
 
       {/* Images */}
       <ImagesGrid images={data.images || []} />

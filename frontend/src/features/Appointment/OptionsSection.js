@@ -1,15 +1,10 @@
-/**
- * TO DO:
- * On handleServiceClick add logic while clicking on on service
- */
-
 import React, { useEffect, useState } from 'react';
 import { Stack, Typography, CircularProgress } from '@mui/material';
 import OptionComponent from './OptionComponent';
 import { db } from '../../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-const OptionsSection = ({ userId }) => {
+const OptionsSection = ({ userId, selectedTypeId, onTypeSelect }) => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,12 +34,6 @@ const OptionsSection = ({ userId }) => {
     fetchServices();
   }, [userId]);
 
-  /**
-   * const handleServiceClick = (service) => {
-   *   // Add logic here
-   * };
-   */
-
   if (loading) {
     return <CircularProgress />;
   }
@@ -72,7 +61,12 @@ const OptionsSection = ({ userId }) => {
         py={3}
       >
         {services.map((service, index) => (
-          <OptionComponent key={index} optionObj={service} />
+          <OptionComponent 
+            optionId={index} 
+            optionObj={service}
+            onSelect={onTypeSelect} // Pass the callback to handle selection
+            selectedTypeId={selectedTypeId}
+          />
         ))}
       </Stack>
     </Stack>

@@ -43,7 +43,7 @@ function App() {
               exact
               component={BusinessOwnerPage}
             />
-            <Route path='/appointment' exact component={AppointmentPage} />
+            <Route path='/Appointment/:id' exact component={AppointmentPage} />
           </Switch>
         </div>
       </div>
