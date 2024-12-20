@@ -1,7 +1,9 @@
 import React from 'react';
 import { Stack, Typography } from '@mui/material';
 
-const OptionComponent = ({ optionId, optionObj, onSelect }) => {  
+const OptionComponent = ({ optionId, optionObj, onSelect, selectedTypeId }) => {  
+  console.log(selectedTypeId, optionId);
+  
   return (
     <Stack
       direction="row"
@@ -13,16 +15,18 @@ const OptionComponent = ({ optionId, optionObj, onSelect }) => {
         padding: '10px 0',
         direction: 'rtl',
         cursor: 'pointer',
+        backgroundColor: selectedTypeId === optionId ? '#1976d2' : '',
+        color: selectedTypeId === optionId ? 'white' : '',
         '&:hover': {
-          backgroundColor: '#f5f5f5',
+          backgroundColor: selectedTypeId === optionId ? '#0266c9' : '#f5f5f5',
         },
       }}
     >
       <div onClick={() => onSelect(optionId, optionObj.name)} style={{ cursor: 'pointer', width: '80%' }}>
         <Stack direction={'row'} justifyContent="space-between" alignItems="center">
           <Typography variant='h5'>{optionObj.name}</Typography>
-          <Typography sx={{ color: 'gray' }}>{optionObj.price} ש"ח</Typography>
-          <Typography sx={{ color: 'gray' }}>{optionObj.time} דקות</Typography>
+          <Typography>{optionObj.price} ש"ח</Typography>
+          <Typography>{optionObj.time} דקות</Typography>
         </Stack>
       </div>
     </Stack>

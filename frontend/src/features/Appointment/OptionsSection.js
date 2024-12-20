@@ -65,6 +65,7 @@ const OptionsSection = ({ userId, selectedTypeId, onTypeSelect }) => {
             optionId={index} 
             optionObj={service}
             onSelect={onTypeSelect} // Pass the callback to handle selection
+            selectedTypeId={selectedTypeId}
           />
         ))}
       </Stack>
