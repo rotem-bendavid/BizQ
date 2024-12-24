@@ -3,7 +3,7 @@ import axios from 'axios';
 export const scheduleAppointment = async (data) => {
   try {
     const response = await axios.post(
-      'http://localhost:5000/scheduleappointment',
+      'http://localhost:5001/scheduleappointment',
       data
     );
     return response.data; // Success response

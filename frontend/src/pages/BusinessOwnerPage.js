@@ -4,19 +4,33 @@
  * ADD IN THE REGISTERATION PAGE THE SOCIALS MEDIA NAMES
  */
 
-import { Box, Typography, Divider, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Divider,
+  CircularProgress,
+  Stack,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { SocialMediaIcons, BusinessOwnerContainer, AboutUs, ScheduleButton, ImagesGrid } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
+import { useParams } from 'react-router-dom';
+import {
+  SocialMediaIcons,
+  BusinessOwnerContainer,
+  AboutUs,
+  ScheduleButton,
+  ImagesGrid,
+} from '../features/BusinessOwnersPage/BusinessOwnerComponents';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import FrostedBackground from '../features/FrostedBackground';
+import AppointmentBlock from '../features/Appointment/AppointmentBlock';
 
 const BusinessOwnerPage = ({ userId }) => {
   const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const [isAppointmentMode, setIsAppointmentMode] = useState(false);
   useEffect(() => {
     const fetchBusinessData = async () => {
       try {
@@ -61,57 +75,67 @@ const BusinessOwnerPage = ({ userId }) => {
   }
 
   const handleScheduleAppointment = () => {
-    history.push(`/Appointment/${id}`); // Navigate to the desired route
+    setIsAppointmentMode(true);
   };
 
-
   return (
-    <BusinessOwnerContainer sx={{ width: '80%' }}>
-      {/* Business Owner Name */}
-      <Typography variant='h4' gutterBottom>
-        {data.businessName}
-      </Typography>
+    <Stack alignItems={'center'}>
+      {!isAppointmentMode ? (
+        <BusinessOwnerContainer sx={{ width: '80%' }}>
+          {/* Business Owner Name */}
+          <Typography variant='h4' gutterBottom>
+            {data.businessName}
+          </Typography>
 
-      {/* Divider */}
-      <Divider sx={{ my: 1 }} />
+          {/* Divider */}
+          <Divider sx={{ my: 1 }} />
 
-      {/* Location */}
-      <Typography variant='body1' color='textSecondary' gutterBottom>
-        {data.address.city +
-          ',' +
-          data.address.street +
-          ',' +
-          data.address.houseNumber}
-      </Typography>
+          {/* Location */}
+          <Typography variant='body1' color='textSecondary' gutterBottom>
+            {data.address.city +
+              ',' +
+              data.address.street +
+              ',' +
+              data.address.houseNumber}
+          </Typography>
 
-      {/* Social Media */}
-      <SocialMediaIcons
-        socialsMedia={data.socialsMedia || {}}
-        name={data.name}
-      />
+          {/* Social Media */}
+          <SocialMediaIcons
+            socialsMedia={data.socialsMedia || {}}
+            name={data.name}
+          />
 
-      {/* Divider */}
-      <Divider sx={{ my: 1 }} />
+          {/* Divider */}
+          <Divider sx={{ my: 1 }} />
 
-      {/* About Us */}
-      <div>
-        <Typography variant='h5' gutterBottom>
-          אודות
-        </Typography>
-        <Typography
-          variant='body1'
-          style={{ textAlign: 'center', marginTop: '10px' }}
-        >
-          {data.description || 'אין תיאור'}
-        </Typography>
-      </div>
+          {/* About Us */}
+          <div>
+            <Typography variant='h5' gutterBottom>
+              אודות
+            </Typography>
+            <Typography
+              variant='body1'
+              style={{ textAlign: 'center', marginTop: '10px' }}
+            >
+              {data.description || 'אין תיאור'}
+            </Typography>
+          </div>
 
-      {/* Schedule Button */}
-      <ScheduleButton onClick={handleScheduleAppointment} text="הזמן"/>
+          {/* Schedule Button */}
+          <ScheduleButton onClick={handleScheduleAppointment} text='הזמן' />
 
-      {/* Images */}
-      <ImagesGrid images={data.images || []} />
-    </BusinessOwnerContainer>
+          {/* Images */}
+          <ImagesGrid images={data.images || []} />
+        </BusinessOwnerContainer>
+      ) : (
+        <FrostedBackground>
+          <AppointmentBlock
+            setIsAppointmentMode={setIsAppointmentMode}
+            businessData={data}
+          />
+        </FrostedBackground>
+      )}
+    </Stack>
   );
 };
 

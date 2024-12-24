@@ -9,8 +9,7 @@ import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import { scheduleAppointment } from '../../api/ScheduleAppointment';
 
-const AppointmentBlock = () => {
-  const { id } = useParams(); // Get BusinessOwners ID from URL  
+const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const history = useHistory(); // Use history for navigation
 
@@ -31,8 +30,8 @@ const AppointmentBlock = () => {
   }, [appointmentData]);
 
   const handleSubmit = async () => {
-    console.log("handleSubmit: ", appointmentData);
-    
+    console.log('handleSubmit: ', appointmentData);
+
     // Validate required fields
     const requiredFields = [
       { field: 'typeId', label: 'בחירה מוצר' },
@@ -45,7 +44,11 @@ const AppointmentBlock = () => {
 
     const missingFields = requiredFields.filter(({ field }) => {
       const value = appointmentData[field];
-      return value === null || value === undefined || (typeof value === 'string' && value.trim() === '');
+      return (
+        value === null ||
+        value === undefined ||
+        (typeof value === 'string' && value.trim() === '')
+      );
     });
 
     if (missingFields.length > 0) {
@@ -54,8 +57,8 @@ const AppointmentBlock = () => {
     }
 
     const dataToSubmit = {
-      businessId: id,
-      ...appointmentData
+      businessId: businessData?.id,
+      ...appointmentData,
     };
 
     // Submit the appointment data
@@ -71,54 +74,63 @@ const AppointmentBlock = () => {
       alert('קרתה שגיאה בתהליך קביעת הפגישה. נסו שנית');
     }
   };
-
   const sections = [
     <OptionsSection
-      userId={id}
+      services={businessData?.services}
       selectedTypeId={appointmentData.typeId}
       onTypeSelect={(typeId, typeName) => {
         setAppointmentData((prev) => ({
-          ...prev, 
-          typeId, 
+          ...prev,
+          typeId,
           typeName,
         }));
         setCurrentSection((prev) => prev + 1);
       }}
     />,
-    <ScheduleSection 
-      selectedDate={appointmentData.date} 
+    <ScheduleSection
+      selectedDate={appointmentData.date}
       onDateSelect={(date) => {
         setAppointmentData((prev) => ({ ...prev, date }));
         setCurrentSection((prev) => prev + 1);
       }}
+      workingDays={businessData.workingDays}
     />,
-    <AppointmentTimeSelection 
-      selectedDate={appointmentData.date} 
+    <AppointmentTimeSelection
+      selectedDate={appointmentData.date}
       selectedTime={appointmentData.time}
       onTimeSelect={(time) => {
         setAppointmentData((prev) => ({ ...prev, time }));
         setCurrentSection((prev) => prev + 1); // Move to next section after selection
       }}
+      businessData={businessData}
     />,
     <AppointmentSummary
       selectedOption={appointmentData.typeName}
-      selectedDate={appointmentData.date} 
+      selectedDate={appointmentData.date}
       selectedTime={appointmentData.time}
       specialRequest={appointmentData.comment}
       clientName={appointmentData.clientName}
       clientMail={appointmentData.clientMail}
       clientPhone={appointmentData.clientPhone}
-      onSpecialRequestChange={(comment) => setAppointmentData((prev) => ({ ...prev, comment }))}
-      onClientNameChange={(name) => setAppointmentData((prev) => ({ ...prev, clientName: name }))}
-      onClientMailChange={(mail) => setAppointmentData((prev) => ({ ...prev, clientMail: mail }))}
-      onClientPhoneChange={(phone) => setAppointmentData((prev) => ({ ...prev, clientPhone: phone }))}
+      onSpecialRequestChange={(comment) =>
+        setAppointmentData((prev) => ({ ...prev, comment }))
+      }
+      onClientNameChange={(name) =>
+        setAppointmentData((prev) => ({ ...prev, clientName: name }))
+      }
+      onClientMailChange={(mail) =>
+        setAppointmentData((prev) => ({ ...prev, clientMail: mail }))
+      }
+      onClientPhoneChange={(phone) =>
+        setAppointmentData((prev) => ({ ...prev, clientPhone: phone }))
+      }
       onSubmit={handleSubmit}
     />,
   ];
 
   const handleLeftClick = () => {
     if (currentSection === 0) {
-      history.goBack();
+      setIsAppointmentMode(false);
     } else {
       setCurrentSection((prev) => prev - 1); // Move to the previous section
     }
@@ -132,14 +144,14 @@ const AppointmentBlock = () => {
 
   return (
     <Stack
-      alignItems="center"
-      height="80vh"
-      justifyContent="space-between"
-      direction="row"
-      width="100%"
+      alignItems='center'
+      height='80vh'
+      justifyContent='space-between'
+      direction='row'
+      width='100%'
     >
       <Button
-        variant="contained"
+        variant='contained'
         onClick={handleLeftClick}
         disabled={currentSection === 0 && history.length === 0} // Optional: disable if no history
       >
@@ -149,9 +161,12 @@ const AppointmentBlock = () => {
       {sections[currentSection]}
 
       <Button
-        variant="contained"
+        variant='contained'
         onClick={handleRightClick}
-        style={{ visibility: currentSection < sections.length - 1 ? 'visible' : 'hidden' }} // Hide the button visually
+        style={{
+          visibility:
+            currentSection < sections.length - 1 ? 'visible' : 'hidden',
+        }} // Hide the button visually
       >
         <ArrowCircleRightIcon />
       </Button>
