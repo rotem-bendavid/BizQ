@@ -1,47 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Stack, Typography, CircularProgress } from '@mui/material';
+import React from 'react';
+import { Stack, Typography } from '@mui/material';
 import OptionComponent from './OptionComponent';
-import { db } from '../../firebase';
-import { doc, getDoc } from 'firebase/firestore';
 
-const OptionsSection = ({ userId, selectedTypeId, onTypeSelect }) => {
-  const [services, setServices] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const docRef = doc(db, 'businesses', userId);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          let services = data.services || {};
-          services = Object.keys(services).map((key) => services[key]);
-          setServices(services);
-        } else {
-          throw new Error('No services found for this user.');
-        }
-      } catch (err) {
-        console.error('Error fetching services:', err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, [userId]);
-
-  if (loading) {
-    return <CircularProgress />;
-  }
-
-  if (error) {
-    return <Typography color='error'>שגיאה בטעינת הנתונים: {error}</Typography>;
-  }
-
+const OptionsSection = ({ services, selectedTypeId, onTypeSelect }) => {
   return (
     <Stack spacing={2} alignItems='center'>
       <Typography variant='h4' gutterBottom>
@@ -61,8 +22,8 @@ const OptionsSection = ({ userId, selectedTypeId, onTypeSelect }) => {
         py={3}
       >
         {services.map((service, index) => (
-          <OptionComponent 
-            optionId={index} 
+          <OptionComponent
+            optionId={index}
             optionObj={service}
             onSelect={onTypeSelect} // Pass the callback to handle selection
             selectedTypeId={selectedTypeId}

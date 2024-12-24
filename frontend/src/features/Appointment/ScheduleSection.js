@@ -5,11 +5,12 @@ import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-const ScheduleSection = ({ selectedDate, onDateSelect }) => {
+const ScheduleSection = ({ selectedDate, onDateSelect, workingDays }) => {
   // Make sure selectedDate is a Dayjs object
   const selectedDateObj = dayjs(selectedDate, 'DD/MM/YYYY');
-  console.log(selectedDateObj);
-
+  const shouldDisableDate = (date) => {
+    return !workingDays?.includes(date.day()); // 0 corresponds to Sunday in Dayjs
+  };
   return (
     <Stack spacing={-2} alignItems='center'>
       <Typography variant='h2'>בחרו תאריך</Typography>
@@ -21,6 +22,7 @@ const ScheduleSection = ({ selectedDate, onDateSelect }) => {
               const formattedDate = dayjs(newValue).format('DD/MM/YYYY');
               onDateSelect(formattedDate); // Pass formatted date string to onDateSelect
             }}
+            shouldDisableDate={shouldDisableDate} // Add this prop
             slotProps={{
               textField: { variant: 'standard' },
             }}

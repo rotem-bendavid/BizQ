@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const appointmentRoutes = require('./routes/appointments');
 
 const app = express();
-const PORT = 5000;
+const PORT = 5001;
 
 // Middleware to parse JSON
 app.use(express.json());

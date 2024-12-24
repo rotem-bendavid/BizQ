@@ -255,13 +255,13 @@ const SignUpPage = () => {
         <Stack spacing={2} mb={4} alignItems='center'>
           <Typography>בחר ימי עבודה</Typography>
           <Stack direction='row' spacing={2} flexWrap='wrap'>
-            {WEEK_DAYS.map((day) => (
+            {WEEK_DAYS.map((day, index) => (
               <FormControlLabel
                 key={day}
                 control={
                   <Checkbox
-                    checked={workingDays.includes(day)}
-                    onChange={() => toggleWorkingDay(day)}
+                    checked={workingDays.includes(index)}
+                    onChange={() => toggleWorkingDay(index)}
                   />
                 }
                 label={day}

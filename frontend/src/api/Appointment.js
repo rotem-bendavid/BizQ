@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export const registerBusiness = async (businessData) => {
+export const getAllTodayAppointments = async (date, businessId) => {
   try {
     const response = await axios.post(
-      'http://localhost:5001/register',
-      businessData
+      'http://localhost:5001/appointment/getTodayAppointments',
+      { date, businessId }
     );
     return response.data; // Success response
   } catch (error) {
@@ -18,9 +18,7 @@ export const registerBusiness = async (businessData) => {
         case 403:
           console.error('Forbidden:', data.message);
           break;
-        case 409:
-          alert('אימייל זה כבר רשום למערכת, נסו להתחבר או להירשם עם אחד אחר');
-          break;
+
         case 500:
         default:
           console.error('Server Error:', data.message);
