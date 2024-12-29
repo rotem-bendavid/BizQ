@@ -15,6 +15,7 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
 
   // Centralized state to store user choices
   const [appointmentData, setAppointmentData] = useState({
+    businessId: businessData.userId,
     clientName: null,
     clientMail: null,
     clientPhone: null,

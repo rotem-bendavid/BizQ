@@ -36,6 +36,8 @@ const SignUpPage = () => {
     houseNumber: '',
     floor: '',
     apartment: '',
+    instagram: '',
+    facebook: '',
   });
 
   const handleInputChange = (field, value) => {
@@ -247,6 +249,18 @@ const SignUpPage = () => {
             label='מספר דירה'
             fullWidth
             onChange={(e) => handleInputChange('apartment', e.target.value)}
+          />
+          <TextField
+            variant="outlined"
+            label="Instagram account name"
+            fullWidth
+            onChange={(e) => handleInputChange('instagram', e.target.value)}
+          />
+          <TextField
+            variant="outlined"
+            label="Facebook account name"
+            fullWidth
+            onChange={(e) => handleInputChange('facebook', e.target.value)}
           />
         </Stack>
 

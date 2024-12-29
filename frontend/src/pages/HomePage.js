@@ -1,47 +1,50 @@
 import React from 'react';
-import {
-  Button,
-  Typography,
-  Stack,
-  IconButton,
-  Card,
-  Grid,
-} from '@mui/material';
+import { Button, Typography, Stack } from '@mui/material';
 import FrostedBackground from '../features/FrostedBackground';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom';
 
 const HomePage = () => {
   const history = useHistory();
 
+  const handleCategoryClick = (categoryId) => {
+    history.push(`/FilterBusiness/${categoryId}`);
+  };
+
+  const handleShowAllClick = () => {
+    history.push(`/FilterBusiness/all`);
+  };
+
   return (
-    <Stack alignItems={'center'} sx={{ height: '80vh', overflowY: 'hidden' }}>
+    <Stack alignItems="center" sx={{ height: '80vh', overflowY: 'hidden' }}>
       <FrostedBackground>
-        <Typography variant='h1'>BizQ</Typography>
-        <Typography variant='h4'>פלטפורמת תזמון חכמה</Typography>
-        <Typography variant='h4'>
+        <Typography variant="h1">BizQ</Typography>
+        <Typography variant="h4">פלטפורמת תזמון חכמה</Typography>
+        <Typography variant="h4">
           מחברת עסקים ולקוחות בפתרון אחד פשוט
         </Typography>
         <Stack
-          direction='row' // Set row direction for horizontal alignment
-          spacing={4} // Space between cubes
-          justifyContent='center' // Center cubes horizontally
-          alignItems='center' // Center cubes vertically
-          sx={{ width: '100%', height: '100%' }} // Adjust dimensions as needed
+          direction="row"
+          spacing={4}
+          justifyContent="center"
+          alignItems="center"
+          sx={{ width: '100%', height: '100%' }}
         >
           {TOPICS.map((topic) => (
-            <TopicCube topicObj={topic}></TopicCube>
-          ))}{' '}
+            <TopicCube
+              key={topic.id}
+              topicObj={topic}
+              onClick={() => handleCategoryClick(topic.id)}
+            />
+          ))}
         </Stack>
         <Button
-          onClick={() => {
-            history.push(`/FilterBusiness`);
-          }}
-          variant='contained'
+          onClick={handleShowAllClick}
+          variant="contained"
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         >
-          <Typography variant='h5'>הצג הכל</Typography>
+          <Typography variant="h5">הצג הכל</Typography>
         </Button>
       </FrostedBackground>
     </Stack>

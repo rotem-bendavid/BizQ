@@ -1,9 +1,3 @@
-/**
- * TO DO LIST: (MISS HERE)
- *
- * ADD IN THE REGISTERATION PAGE THE SOCIALS MEDIA NAMES
- */
-
 import {
   Box,
   Typography,
@@ -16,7 +10,6 @@ import { useParams } from 'react-router-dom';
 import {
   SocialMediaIcons,
   BusinessOwnerContainer,
-  AboutUs,
   ScheduleButton,
   ImagesGrid,
 } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
@@ -69,7 +62,7 @@ const BusinessOwnerPage = ({ userId }) => {
   if (error) {
     return (
       <Typography variant='h6' align='center' color='error' mt={4}>
-        שגיאה בטעינת הנתונים: {error}
+        Error loading data: {error}
       </Typography>
     );
   }
@@ -101,8 +94,11 @@ const BusinessOwnerPage = ({ userId }) => {
 
           {/* Social Media */}
           <SocialMediaIcons
-            socialsMedia={data.socialsMedia || {}}
+            facebook={data.facebook}
+            instagram={data.instagram}
+            address={data.address}
             name={data.name}
+            phone={data.phone}
           />
 
           {/* Divider */}
@@ -111,18 +107,18 @@ const BusinessOwnerPage = ({ userId }) => {
           {/* About Us */}
           <div>
             <Typography variant='h5' gutterBottom>
-              אודות
+              About Us
             </Typography>
             <Typography
               variant='body1'
               style={{ textAlign: 'center', marginTop: '10px' }}
             >
-              {data.description || 'אין תיאור'}
+              {data.description || 'No description'}
             </Typography>
           </div>
 
           {/* Schedule Button */}
-          <ScheduleButton onClick={handleScheduleAppointment} text='הזמן' />
+          <ScheduleButton onClick={handleScheduleAppointment} text='schedule' />
 
           {/* Images */}
           <ImagesGrid images={data.images || []} />

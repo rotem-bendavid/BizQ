@@ -17,25 +17,46 @@ const AppointmentTimeSelection = ({
 }) => {
   const [availableTimes, setAvailableTimes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    getAllTodayAppointments(selectedDate, businessData.userId).then(
-      (appointments) => {
-        console.log(appointments);
+    const fetchAvailableTimes = async () => {
+      setIsLoading(true);
+      try {
+        // Fetch scheduled appointments for the given business and date
+        const response = await getAllTodayAppointments(
+          selectedDate,
+          businessData.userId
+        );
+
+        const scheduledAppointments = response?.data || [];
+        const scheduledTimes = scheduledAppointments.map(
+          (appointment) => appointment.time
+        );
+
+
         const { from, to } = businessData?.workingHours;
-        const startTime = dayjs(from, 'H:mm'); // Parse 'from' time
+        const startTime = dayjs(from, 'H:mm');
         const endTime = dayjs(to, 'H:mm');
         let hours = [];
         let currentTime = startTime;
         setIsLoading(true);
         while (currentTime.isBefore(endTime) || currentTime.isSame(endTime)) {
           hours.push(currentTime.format('H:mm'));
-          currentTime = currentTime.add(30, 'minute'); // Increment by interval
+          currentTime = currentTime.add(30, 'minute');
         }
+
         setAvailableTimes(hours);
+      } catch (error) {
+        console.error('Error fetching appointment times:', error);
+      } finally {
         setIsLoading(false);
       }
-    );
-  }, []);
+    };
+
+    if (selectedDate && businessData?.userId) {
+      fetchAvailableTimes();
+    }
+  }, [selectedDate, businessData]);
 
   return (
     <Stack alignItems={'center'} justifyContent={'center'} spacing={3}>
@@ -72,5 +93,6 @@ const AppointmentTimeSelection = ({
 };
 
 export default AppointmentTimeSelection;
+
 //variant={selectedTime === time ? 'contained' : 'outlined'} // Apply "contained" if it's selected
 //{selectedTime === time ? 'blue' : 'gray'}
