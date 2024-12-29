@@ -39,13 +39,16 @@ export const BusinessOwnerContainer = ({ children, sx }) => (
   </Container>
 );
 
-export const SocialMediaIcons = ({ socialsMedia, name }) => (
+export const SocialMediaIcons = ({facebook, instagram, address, name , phone}) => {
+  const { city, street, houseNumber } = address || {};
+  const addressString = `${street} ${houseNumber}, ${city}`;
+  return (
   <Box display='flex' justifyContent='center' gap={1}>
-    {socialsMedia.facebook && (
+    {facebook && (
       <IconButton
         color='primary'
         href={`https://www.facebook.com/${encodeURIComponent(
-          socialsMedia.facebook
+          facebook
         )}`}
         target='_blank'
         rel='noopener noreferrer'
@@ -55,11 +58,11 @@ export const SocialMediaIcons = ({ socialsMedia, name }) => (
       </IconButton>
     )}
 
-    {socialsMedia.instagram && (
+    {instagram && (
       <IconButton
         color='secondary'
         href={`https://www.instagram.com/${encodeURIComponent(
-          socialsMedia.instagram
+          instagram
         )}`}
         target='_blank'
         rel='noopener noreferrer'
@@ -68,8 +71,9 @@ export const SocialMediaIcons = ({ socialsMedia, name }) => (
         <Instagram />
       </IconButton>
     )}
-    <IconButton
-      href={`https://waze.com/ul?q=${encodeURIComponent(name)}`}
+    {address &&( 
+      <IconButton
+      href={`https://waze.com/ul?q=${encodeURIComponent(addressString)}`}
       target='_blank'
       rel='noopener noreferrer'
       aria-label='Waze'
@@ -80,11 +84,12 @@ export const SocialMediaIcons = ({ socialsMedia, name }) => (
         style={{ width: 26, height: 26 }}
       />
     </IconButton>
-    {socialsMedia.googleMaps && (
+    )}
+    {address && (
       <IconButton
         color='secondery'
         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          socialsMedia.googleMaps
+          addressString
         )}`}
         target='_blank'
         rel='noopener noreferrer'
@@ -97,8 +102,18 @@ export const SocialMediaIcons = ({ socialsMedia, name }) => (
         />
       </IconButton>
     )}
+    {phone && (
+      <IconButton
+        color='primary'
+        href={`tel:${phone}`}
+        aria-label='Phone'
+      >
+        <Typography variant="body2">Call</Typography>
+      </IconButton>
+    )}
   </Box>
-);
+  );
+};
 
 export const AboutUs = ({ aboutUs }) => (
   <div>
