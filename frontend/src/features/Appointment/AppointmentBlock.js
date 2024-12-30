@@ -57,12 +57,23 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
       return;
     }
 
+    const [day, month, year] = appointmentData.date.split('/').map(Number); // Extract day, month, year
+    const [hours, minutes] = appointmentData.time.split(':').map(Number);
+
+    const appointmentTime = Number(
+      businessData?.services[appointmentData.typeId].time
+    );
+    const startDate = new Date(year, month - 1, day, hours, minutes);
+
+    // Calculate the endDate by adding appointmentTime (in minutes)
+    const endDate = new Date(startDate.getTime() + appointmentTime * 60000);
     const dataToSubmit = {
       businessId: businessData?.id,
       ...appointmentData,
+      startDate,
+      endDate,
+      service: businessData?.services[appointmentData.typeId].name,
     };
-
-    // Submit the appointment data
     try {
       const response = await scheduleAppointment(dataToSubmit);
 

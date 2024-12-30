@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Scheduler,
   MonthView,
@@ -12,32 +12,15 @@ import WestIcon from '@mui/icons-material/West';
 import { Button, Paper, Stack } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import FrostedBackground from '../features/FrostedBackground';
+import { useIsLoggedIn } from '../utils/auth';
+import { getAllAppointments } from '../api/Appointment';
 
 const SchedulerPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentViewName, setCurrentViewName] = useState('Month');
-  const schedulerData = [
-    {
-      startDate: '2024-11-01T09:45',
-      endDate: '2024-11-01T11:00',
-      title: 'Meeting',
-    },
-    {
-      startDate: '2024-11-01T12:00',
-      endDate: '2024-11-01T13:30',
-      title: 'Go to a gym',
-    },
-    {
-      startDate: '2024-11-01T14:00',
-      endDate: '2024-11-01T14:30',
-      title: 'Go to a gym',
-    },
-    {
-      startDate: '2024-11-01T14:00',
-      endDate: '2024-11-01T16:30',
-      title: 'Go to a gym',
-    },
-  ];
+  const [schedulerData, setSchedulerData] = useState([]);
+  const isLoggedIn = useIsLoggedIn();
+
   const CustomAppointment = ({ children, data, ...restProps }) => {
     const handleClick = () => {
       setCurrentDate(data?.startDate); // Change to the clicked day
@@ -66,6 +49,17 @@ const SchedulerPage = () => {
       />
     );
   };
+  useEffect(() => {
+    getAllAppointments(isLoggedIn).then((data) => {
+      const updatedData = data?.data?.map((appointment) => ({
+        ...appointment,
+        title: `${appointment.clientName} - ${appointment.service}`, // Customize the title as needed
+      }));
+
+      console.log(updatedData);
+      setSchedulerData(updatedData);
+    });
+  }, []);
   return (
     <Stack alignItems={'center'}>
       <FrostedBackground>

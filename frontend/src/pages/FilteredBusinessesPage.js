@@ -15,6 +15,7 @@ import {
 import FrostedBackground from '../features/FrostedBackground';
 import SearchIcon from '@mui/icons-material/Search';
 import { getLocationByIP } from '../api/Location';
+import { isHebrew } from '../utils/common';
 
 const FilteredBusinessesPage = () => {
   const { category } = useParams();
@@ -36,7 +37,6 @@ const FilteredBusinessesPage = () => {
 
         const businessesRef = collection(db, 'businesses');
         let q;
-
         if (category && category !== 'all') {
           q = query(businessesRef, where('category', '==', category));
         } else {
@@ -48,16 +48,16 @@ const FilteredBusinessesPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
-
         // Apply location filtering only if a specific category is selected
         const locationFilteredBusinesses =
           category === 'all'
             ? fetchedBusinesses // Show all businesses without filtering by location
             : fetchedBusinesses.filter(
                 (business) =>
-                  business.address?.city === city || business.address?.city === 'Unknown'
+                  business.address?.city.toLowerCase() ===
+                    city?.toLowerCase() || business.address?.city === 'Unknown'
               );
-              console.log("")
+        console.log('');
         setBusinesses(locationFilteredBusinesses);
         setFilteredBusinesses(locationFilteredBusinesses);
       } catch (error) {
@@ -77,7 +77,8 @@ const FilteredBusinessesPage = () => {
     const filtered = businesses.filter(
       (business) =>
         business.businessName.toLowerCase().includes(value) ||
-        (business.description && business.description.toLowerCase().includes(value))
+        (business.description &&
+          business.description.toLowerCase().includes(value))
     );
     setFilteredBusinesses(filtered);
   };
@@ -89,20 +90,24 @@ const FilteredBusinessesPage = () => {
   if (loading) return <CircularProgress sx={{ margin: 'auto' }} />;
 
   return (
-    <Stack alignItems="center"  >
+    <Stack alignItems='center' sx={{ height: '85vh' }}>
       <FrostedBackground>
-        <Stack spacing={3} >
+        <Stack spacing={3}>
           {/* Show user city */}
           {category !== 'all' && (
-            <Typography variant="h6" align="center" sx={{ marginBottom: '10px' }}>
+            <Typography
+              variant='h6'
+              align='center'
+              sx={{ marginBottom: '10px' }}
+            >
               Showing results for your city: {userCity}
             </Typography>
           )}
 
           {/* Search Bar */}
           <Stack
-            direction="row"
-            alignItems="center"
+            direction='row'
+            alignItems='center'
             spacing={2}
             sx={{
               backgroundColor: 'white',
@@ -114,7 +119,7 @@ const FilteredBusinessesPage = () => {
           >
             <TextField
               fullWidth
-              placeholder="חפש לפי שם או תיאור"
+              placeholder='חפש לפי שם או תיאור'
               value={searchTerm}
               onChange={handleSearch}
               sx={{
@@ -128,56 +133,65 @@ const FilteredBusinessesPage = () => {
             </IconButton>
           </Stack>
 
-          {/* Businesses List */}
           <Stack
-            spacing={3}
             sx={{
-              height: '100%',
-              overflowY: 'auto',
-              padding: '10px',
-              borderRadius: '20px',
-              backgroundColor: 'rgba(255, 255, 255, 0.8)',
-              boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
-              '&::-webkit-scrollbar': {
-                width: '8px',
-              },
-              '&::-webkit-scrollbar-thumb': {
-                backgroundColor: '#ccc',
-                borderRadius: '4px',
-              },
-              '&::-webkit-scrollbar-thumb:hover': {
-                backgroundColor: '#aaa',
-              },
+              overflowY: 'scroll',
+              height: '50vh',
+              paddingBottom: '10px',
             }}
           >
-            {filteredBusinesses.length > 0 ? (
-              filteredBusinesses.map((business) => (
-                <Card
-                  key={business.id}
-                  onClick={() => navigateToBusiness(business.id)}
-                  sx={{
-                    borderRadius: '15px',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    },
-                  }}
-                >
-                  <CardContent>
-                    <Typography variant="h6">{business.businessName}</Typography>
-                    <Typography>
-                      {business.description || 'No description available.'}
-                    </Typography>
-                    <Typography>{`City: ${business.address?.city || 'N/A'}`}</Typography>
-                  </CardContent>
-                </Card>
-              ))
-            ) : (
-              <Typography variant="body1" align="center">
-                לא נמצאו עסקים תואמים
-              </Typography>
-            )}
+            <Stack spacing={3}>
+              {filteredBusinesses.length > 0 ? (
+                filteredBusinesses.map((business) => (
+                  <Card
+                    key={business.id}
+                    onClick={() => navigateToBusiness(business.id)}
+                    sx={{
+                      borderRadius: '15px',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                      },
+                    }}
+                  >
+                    <CardContent>
+                      <Typography
+                        variant='h6'
+                        sx={{
+                          direction: isHebrew(business?.businessName)
+                            ? 'rtl'
+                            : 'ltr',
+                        }}
+                      >
+                        {business.businessName}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          direction: isHebrew(business?.description)
+                            ? 'rtl'
+                            : 'ltr',
+                          display: '-webkit-box', // Enable the line clamping
+                          WebkitBoxOrient: 'vertical', // Set box orientation to vertical
+                          overflow: 'hidden', // Hide the overflowing text
+                          textOverflow: 'ellipsis', // Add "..." for overflow
+                          WebkitLineClamp: 3, // Limit to 3 lines
+                        }}
+                      >
+                        {business.description || 'No description available.'}
+                      </Typography>
+                      <Typography>{`City: ${
+                        business.address?.city || 'N/A'
+                      }`}</Typography>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <Typography variant='body1' align='center'>
+                  לא נמצאו עסקים תואמים
+                </Typography>
+              )}
+            </Stack>
           </Stack>
         </Stack>
       </FrostedBackground>
