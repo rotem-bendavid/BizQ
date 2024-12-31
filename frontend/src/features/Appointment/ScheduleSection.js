@@ -8,9 +8,13 @@ import dayjs from 'dayjs';
 const ScheduleSection = ({ selectedDate, onDateSelect, workingDays }) => {
   // Make sure selectedDate is a Dayjs object
   const selectedDateObj = dayjs(selectedDate, 'DD/MM/YYYY');
+
   const shouldDisableDate = (date) => {
-    return !workingDays?.includes(date.day()); // 0 corresponds to Sunday in Dayjs
+    const isPastDate = dayjs().isAfter(date, 'day'); // Disable past dates
+    const isWorkingDay = workingDays?.includes(date.day()); // Check if the date is a working day
+    return isPastDate || !isWorkingDay; // Disable past dates or non-working days
   };
+
   return (
     <Stack spacing={-2} alignItems='center'>
       <Typography variant='h2'>בחרו תאריך</Typography>
@@ -22,7 +26,7 @@ const ScheduleSection = ({ selectedDate, onDateSelect, workingDays }) => {
               const formattedDate = dayjs(newValue).format('DD/MM/YYYY');
               onDateSelect(formattedDate); // Pass formatted date string to onDateSelect
             }}
-            shouldDisableDate={shouldDisableDate} // Add this prop
+            shouldDisableDate={shouldDisableDate} // Add this prop to disable past dates and non-working days
             slotProps={{
               textField: { variant: 'standard' },
             }}

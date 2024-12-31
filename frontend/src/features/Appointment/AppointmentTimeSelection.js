@@ -68,15 +68,19 @@ const AppointmentTimeSelection = ({
         const startTime = dayjs(`${selectedDate} ${from}`, 'DD/MM/YYYY H:mm');
         const endTime = dayjs(`${selectedDate} ${to}`, 'DD/MM/YYYY H:mm');
 
+        // Check if the selected date is today
+        const isToday = dayjs(selectedDate, 'DD/MM/YYYY').isSame(
+          dayjs(),
+          'day'
+        );
+
         // Generate all time slots
         let hours = [];
         let currentTime = startTime;
-        console.log(endTime, startTime);
         while (currentTime.isBefore(endTime) || currentTime.isSame(endTime)) {
           hours.push(currentTime.format('H:mm'));
           currentTime = currentTime.add(30, 'minute');
         }
-        console.log(hours);
 
         // Filter available time slots
         const availableTimes = hours.filter((hour) => {
@@ -85,6 +89,11 @@ const AppointmentTimeSelection = ({
             'DD/MM/YYYY H:mm'
           );
           const intervalEnd = intervalStart.add(appointmentDuration, 'minute');
+
+          // If it's today, exclude past times
+          if (isToday && intervalStart.isBefore(dayjs())) {
+            return false;
+          }
 
           // Check if interval overlaps with any scheduled appointments
           return !scheduledTimes.some(
@@ -140,6 +149,3 @@ const AppointmentTimeSelection = ({
 };
 
 export default AppointmentTimeSelection;
-
-//variant={selectedTime === time ? 'contained' : 'outlined'} // Apply "contained" if it's selected
-//{selectedTime === time ? 'blue' : 'gray'}
