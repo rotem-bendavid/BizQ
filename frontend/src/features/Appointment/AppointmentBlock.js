@@ -115,6 +115,7 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
         setCurrentSection((prev) => prev + 1); // Move to next section after selection
       }}
       businessData={businessData}
+      appointmentData={appointmentData}
     />,
     <AppointmentSummary
       selectedOption={appointmentData.typeName}

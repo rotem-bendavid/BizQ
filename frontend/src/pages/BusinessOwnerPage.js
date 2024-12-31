@@ -98,6 +98,7 @@ const BusinessOwnerPage = ({ userId }) => {
             instagram={data.instagram}
             address={data.address}
             name={data.name}
+            whatsApp={data.phone}
             phone={data.phone}
           />
 

@@ -14,6 +14,7 @@ const AppointmentTimeSelection = ({
   selectedTime,
   onTimeSelect,
   businessData,
+  appointmentData,
 }) => {
   const [availableTimes, setAvailableTimes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,32 +23,80 @@ const AppointmentTimeSelection = ({
     const fetchAvailableTimes = async () => {
       setIsLoading(true);
       try {
-        // Fetch scheduled appointments for the given business and date
+        // Validate inputs
+        if (
+          !selectedDate ||
+          !businessData?.userId ||
+          !appointmentData?.typeId
+        ) {
+          throw new Error('Missing required data for scheduling.');
+        }
+
+        // Fetch scheduled appointments
         const response = await getAllTodayAppointments(
           selectedDate,
           businessData.userId
         );
-
         const scheduledAppointments = response?.data || [];
-        const scheduledTimes = scheduledAppointments.map(
-          (appointment) => appointment.time
-        );
 
+        // Convert scheduled appointments to dayjs objects
+        const scheduledTimes = scheduledAppointments.map((appointment) => {
+          // Parse startDate and endDate with selectedDate (DD/MM/YYYY)
+          const startDate = dayjs(
+            `${selectedDate} ${dayjs(appointment.startDate).format('H:mm')}`,
+            'DD/MM/YYYY H:mm'
+          );
+          const endDate = dayjs(
+            `${selectedDate} ${dayjs(appointment.endDate).format('H:mm')}`,
+            'DD/MM/YYYY H:mm'
+          );
+          return { startDate, endDate };
+        });
 
+        // Get appointment duration and working hours
+        const appointmentDuration = Number(
+          businessData?.services[appointmentData.typeId]?.time
+        ); // in minutes
         const { from, to } = businessData?.workingHours;
-        const startTime = dayjs(from, 'H:mm');
-        const endTime = dayjs(to, 'H:mm');
+
+        // Validate working hours
+        if (!from || !to) {
+          throw new Error('Invalid working hours.');
+        }
+
+        // Construct startTime and endTime with full date context
+        const startTime = dayjs(`${selectedDate} ${from}`, 'DD/MM/YYYY H:mm');
+        const endTime = dayjs(`${selectedDate} ${to}`, 'DD/MM/YYYY H:mm');
+
+        // Generate all time slots
         let hours = [];
         let currentTime = startTime;
-        setIsLoading(true);
+        console.log(endTime, startTime);
         while (currentTime.isBefore(endTime) || currentTime.isSame(endTime)) {
           hours.push(currentTime.format('H:mm'));
           currentTime = currentTime.add(30, 'minute');
         }
+        console.log(hours);
 
-        setAvailableTimes(hours);
+        // Filter available time slots
+        const availableTimes = hours.filter((hour) => {
+          const intervalStart = dayjs(
+            `${selectedDate} ${hour}`,
+            'DD/MM/YYYY H:mm'
+          );
+          const intervalEnd = intervalStart.add(appointmentDuration, 'minute');
+
+          // Check if interval overlaps with any scheduled appointments
+          return !scheduledTimes.some(
+            ({ startDate, endDate }) =>
+              intervalStart.isBefore(endDate) && intervalEnd.isAfter(startDate)
+          );
+        });
+
+        setAvailableTimes(availableTimes);
       } catch (error) {
-        console.error('Error fetching appointment times:', error);
+        console.error('Error fetching appointment times:', error.message);
+        setAvailableTimes([]); // Ensure empty state on error
       } finally {
         setIsLoading(false);
       }
@@ -56,10 +105,10 @@ const AppointmentTimeSelection = ({
     if (selectedDate && businessData?.userId) {
       fetchAvailableTimes();
     }
-  }, [selectedDate, businessData]);
+  }, [selectedDate, businessData, appointmentData]);
 
   return (
-    <Stack alignItems={'center'} justifyContent={'center'} spacing={3}>
+    <Stack alignItems='center' justifyContent='center' spacing={3}>
       <Typography variant='h4' textAlign='center'>
         בחר את השעה
       </Typography>
@@ -67,11 +116,9 @@ const AppointmentTimeSelection = ({
         {selectedDate}
       </Typography>
       {isLoading ? (
-        <CircularProgress
-          sx={{ fontSize: '30px', color: 'black' }}
-        ></CircularProgress>
+        <CircularProgress sx={{ fontSize: '30px', color: 'black' }} />
       ) : (
-        <Grid container spacing={2} justifyContent={'center'}>
+        <Grid container spacing={2} justifyContent='center'>
           {availableTimes.map((time) => (
             <Grid item key={time}>
               <Button
