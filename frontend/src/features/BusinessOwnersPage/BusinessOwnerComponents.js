@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Instagram } from '@mui/icons-material';
+import { Facebook, Instagram, WhatsApp } from '@mui/icons-material';
 import {
   Box,
   IconButton,
@@ -39,79 +39,89 @@ export const BusinessOwnerContainer = ({ children, sx }) => (
   </Container>
 );
 
-export const SocialMediaIcons = ({facebook, instagram, address, name , phone}) => {
+export const SocialMediaIcons = ({
+  facebook,
+  instagram,
+  address,
+  name,
+  whatsApp,
+  phone,
+}) => {
   const { city, street, houseNumber } = address || {};
   const addressString = `${street} ${houseNumber}, ${city}`;
   return (
-  <Box display='flex' justifyContent='center' gap={1}>
-    {facebook && (
-      <IconButton
-        color='primary'
-        href={`https://www.facebook.com/${encodeURIComponent(
-          facebook
-        )}`}
-        target='_blank'
-        rel='noopener noreferrer'
-        aria-label='Facebook'
-      >
-        <Facebook />
-      </IconButton>
-    )}
+    <Box display='flex' justifyContent='center' gap={1}>
+      {facebook && (
+        <IconButton
+          color='primary'
+          href={`https://www.facebook.com/${encodeURIComponent(facebook)}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Facebook'
+        >
+          <Facebook />
+        </IconButton>
+      )}
+      {whatsApp && (
+        <IconButton
+          sx={{ color: 'green' }}
+          href={`https://wa.me/${whatsApp}/?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%9C%20%D7%A4%D7%A8%D7%98%D7%99%D7%9D%20%D7%91%D7%A0%D7%95%D7%92%D7%A2%20%D7%9C%D7%A2%D7%A1%D7%A7%20%D7%A9%D7%9C%D7%9A`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Instagram'
+        >
+          <WhatsApp />
+        </IconButton>
+      )}
 
-    {instagram && (
-      <IconButton
-        color='secondary'
-        href={`https://www.instagram.com/${encodeURIComponent(
-          instagram
-        )}`}
-        target='_blank'
-        rel='noopener noreferrer'
-        aria-label='Instagram'
-      >
-        <Instagram />
-      </IconButton>
-    )}
-    {address &&( 
-      <IconButton
-      href={`https://waze.com/ul?q=${encodeURIComponent(addressString)}`}
-      target='_blank'
-      rel='noopener noreferrer'
-      aria-label='Waze'
-    >
-      <img
-        src='../static/socialMediaIcons/Waze_icon.png'
-        alt='Waze'
-        style={{ width: 26, height: 26 }}
-      />
-    </IconButton>
-    )}
-    {address && (
-      <IconButton
-        color='secondery'
-        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          addressString
-        )}`}
-        target='_blank'
-        rel='noopener noreferrer'
-        aria-label='Google Maps'
-      >
-        <img
-          src='../static/socialMediaIcons/GoogleMapsIcon.png'
-          alt='Waze'
-          style={{ width: 26, height: 26 }}
-        />
-      </IconButton>
-    )}
-    {phone && (
-      <IconButton
-        color='primary'
-        href={`tel:${phone}`}
-        aria-label='Phone'
-      >
-        <Typography variant="body2">Call</Typography>
-      </IconButton>
-    )}
-  </Box>
+      {instagram && (
+        <IconButton
+          color='secondary'
+          href={`https://www.instagram.com/${encodeURIComponent(instagram)}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Instagram'
+        >
+          <Instagram />
+        </IconButton>
+      )}
+      {address && (
+        <IconButton
+          href={`https://waze.com/ul?q=${encodeURIComponent(addressString)}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Waze'
+        >
+          <img
+            src='../static/socialMediaIcons/Waze_icon.png'
+            alt='Waze'
+            style={{ width: 26, height: 26 }}
+          />
+        </IconButton>
+      )}
+      {address && (
+        <IconButton
+          color='secondery'
+          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+            addressString
+          )}`}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label='Google Maps'
+        >
+          <img
+            src='../static/socialMediaIcons/GoogleMapsIcon.png'
+            alt='Waze'
+            style={{ width: 26, height: 26 }}
+          />
+        </IconButton>
+      )}
+      {phone && (
+        <IconButton color='primary' href={`tel:${phone}`} aria-label='Phone'>
+          <Typography variant='body2'>Call</Typography>
+        </IconButton>
+      )}
+    </Box>
   );
 };
 
