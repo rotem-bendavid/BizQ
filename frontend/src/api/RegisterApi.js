@@ -19,7 +19,7 @@ export const registerBusiness = async (businessData) => {
           console.error('Forbidden:', data.message);
           break;
         case 409:
-          alert('אימייל זה כבר רשום למערכת, נסו להתחבר או להירשם עם אחד אחר');
+          alert('This email is already registered in the system, try to connect or register with another one');
           break;
         case 500:
         default:

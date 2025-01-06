@@ -1,17 +1,16 @@
 import React from 'react';
 import '../App.css';
 import BackGround from '../features/BackGround';
+import { CATEGORIES } from '../features/SignUpPage/data';
 
 const CategoriesPage = () => {
-  const categories = ['אסתטיקה', 'שיער', 'בריאות', 'כושר', 'חינוך'];
-
   return (
     <>
       <BackGround />
       <div className="container">
-        <h1>Categories</h1>
+        <h1>CATEGORIES</h1>
         <ul>
-          {categories.map((category, index) => (
+          {CATEGORIES.map((category, index) => (
             <li key={index}>{category}</li>
           ))}
         </ul>

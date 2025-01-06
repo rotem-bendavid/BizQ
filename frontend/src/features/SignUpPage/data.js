@@ -1,10 +1,10 @@
 export const WEEK_DAYS = [
-  'ראשון',
-  'שני',
-  'שלישי',
-  'רביעי',
-  'חמישי',
-  'שישי',
-  'שבת',
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
-export const CATEGORIES = ['אסתטיקה', 'חינוך', 'כושר', 'שיער', 'בריאות'];
+export const CATEGORIES = ['Aesthetics', 'Education', 'Fitness', 'Hair salons', 'Health'];

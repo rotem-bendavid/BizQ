@@ -10,15 +10,13 @@ import FrostedBackground from '../features/FrostedBackground';
 import { authenticateUser } from '../api/LoginApi';
 
 const LoginPage = () => {
-  // State for input fields
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevent form refresh
+    e.preventDefault();
     setIsLoading(true);
     try {
-      // Call the API to authenticate the user
       const response = await authenticateUser(email, password);
 
       if (!response.success) {
@@ -29,15 +27,16 @@ const LoginPage = () => {
       // Handle successful login (e.g., navigate, store token)
     } catch (error) {
       alert(error.message);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
     <Stack alignItems='center' justifyContent='center'>
       <FrostedBackground>
         <Typography variant='h2' gutterBottom>
-          התחברות בעלי עסקים
+        business owner login
         </Typography>
 
         <form onSubmit={handleLogin}>
@@ -49,8 +48,8 @@ const LoginPage = () => {
               fullWidth
               type='email'
               required
-              value={email} // Bind to state
-              onChange={(e) => setEmail(e.target.value)} // Update state on input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             {/* Password Input */}
             <TextField
@@ -59,8 +58,8 @@ const LoginPage = () => {
               fullWidth
               type='password'
               required
-              value={password} // Bind to state
-              onChange={(e) => setPassword(e.target.value)} // Update state on input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             {/* Submit Button */}
             <Button
@@ -74,7 +73,7 @@ const LoginPage = () => {
                   sx={{ color: 'white' }}
                 ></CircularProgress>
               ) : (
-                <Typography variant='h5'>התחבר</Typography>
+                <Typography variant='h5'>connect</Typography>
               )}
             </Button>
           </Stack>

@@ -22,9 +22,9 @@ export const authenticateUser = async (email, password) => {
     console.error('Authentication error:', error.message);
 
     // Handle specific Firebase errors
-    let errorMessage = 'תקלה בהתחברות, נסו שנית';
+    let errorMessage = 'Login failed, try again';
     if (error.code === 'auth/invalid-credential') {
-      errorMessage = 'אחד או יותר מהפרטים שגואים';
+      errorMessage = 'Wrong email or password';
     }
 
     return {

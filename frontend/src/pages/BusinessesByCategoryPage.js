@@ -6,7 +6,7 @@ import BackGround from '../features/BackGround';
 import { useNavigate } from 'react-router-dom';
 
 const BusinessesByCategoryPage = () => {
-  const [categories] = useState(['אסתטיקה', 'שיער', 'בריאות', 'כושר', 'חינוך']);
+  const [categories] = useState(['Aesthetics', 'Hair salons', 'Health', 'Fitness', 'Education']);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [businesses, setBusinesses] = useState([]);
   const navigate = useNavigate();
