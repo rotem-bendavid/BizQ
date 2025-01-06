@@ -53,7 +53,7 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
     });
 
     if (missingFields.length > 0) {
-      alert(`אנא מלאו את הערך בשדה: ${missingFields[0].label}`);
+      alert(`Please fill in the value in the field: ${missingFields[0].label}`);
       return;
     }
 
@@ -78,12 +78,11 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
       const response = await scheduleAppointment(dataToSubmit);
 
       if (response.success) {
-        alert('Appointment Scheduled Successfully!');
         window.location.href = '/';
       }
     } catch (error) {
       console.error(error);
-      alert('קרתה שגיאה בתהליך קביעת הפגישה. נסו שנית');
+      alert('An error occurred during the appointment process. try again');
     }
   };
   const sections = [
