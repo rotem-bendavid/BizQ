@@ -10,7 +10,7 @@ const AppointmentPage = () => {
     console.error('User ID is not provided. Redirecting to previous page.');
     return (
       <Typography color="error" align="center" mt={4}>
-        שגיאה בטעינת הנתונים: User ID is not provided.
+        Error loading data: User ID is not provided.
       </Typography>
     );
   }
