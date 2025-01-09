@@ -13,7 +13,7 @@ import { Button, Paper, Stack } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import FrostedBackground from '../features/FrostedBackground';
 import { useIsLoggedIn } from '../utils/auth';
-import { getAllAppointments } from '../api/Appointment';
+import { cancelAppointment, getAllAppointments } from '../api/Appointment';
 
 const SchedulerPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -27,12 +27,53 @@ const SchedulerPage = () => {
       setCurrentViewName('Day');
     };
 
+    const handleCancelAppointment = async (appointmentId) => {
+      if (window.confirm(`האם אתם בטוחים שאתם רוצים לבטל את התור?`)) {
+        try {
+          const result = await cancelAppointment(appointmentId);
+
+          if (result.success) {
+            alert('התור בוטל בהצלחה');
+            // Optionally, refresh appointments data
+            setSchedulerData((prevData) =>
+              prevData.filter((appointment) => appointment.id !== appointmentId)
+            );
+          } else {
+            alert(`התור לא בוטל אנו נסו שוב`);
+          }
+        } catch (error) {
+          console.log(`An error occurred: ${error.message}`);
+        }
+      }
+    };
+
     return (
       <Appointments.Appointment {...restProps} onClick={handleClick}>
-        {children}
+        <div style={{ position: 'relative', padding: '10px' }}>
+          {children}
+          {currentViewName === 'Day' && (
+            <Button
+              size='small'
+              color='error'
+              variant='contained'
+              style={{
+                position: 'absolute',
+                top: '5px',
+                right: '5px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the appointment click event
+                handleCancelAppointment(data?.id);
+              }}
+            >
+              ביטול תור
+            </Button>
+          )}
+        </div>
       </Appointments.Appointment>
     );
   };
+
   const CustomTimeTableCell = ({ startDate, ...restProps }) => {
     const handleDayClick = () => {
       console.log(startDate);
