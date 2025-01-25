@@ -9,18 +9,19 @@ import {
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import WestIcon from '@mui/icons-material/West';
-import { Button, Paper, Stack } from '@mui/material';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import FrostedBackground from '../features/FrostedBackground';
 import { useIsLoggedIn } from '../utils/auth';
 import { cancelAppointment, getAllAppointments } from '../api/Appointment';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SchedulerPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentViewName, setCurrentViewName] = useState('Month');
   const [schedulerData, setSchedulerData] = useState([]);
   const isLoggedIn = useIsLoggedIn();
-
+  const history = useHistory();
   const CustomAppointment = ({ children, data, ...restProps }) => {
     const handleClick = () => {
       setCurrentDate(data?.startDate); // Change to the clicked day
@@ -102,7 +103,16 @@ const SchedulerPage = () => {
     });
   }, []);
   return (
-    <Stack alignItems={'center'}>
+    <Stack alignItems={'center'} spacing={1}>
+      <Button
+        variant='contained'
+        sx={{ backgroundColor: 'black', borderRadius: '30px' }}
+        onClick={() => {
+          history.push(`/signup/${isLoggedIn}`);
+        }}
+      >
+        <Typography variant='h5'>עריכת עסק</Typography>
+      </Button>
       <FrostedBackground>
         {currentViewName !== 'Month' && (
           <Button

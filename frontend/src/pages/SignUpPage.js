@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Typography,
   Stack,
@@ -19,8 +19,13 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { WEEK_DAYS, CATEGORIES } from '../features/SignUpPage/data';
 import FrostedBackground from '../features/FrostedBackground';
 import { registerBusiness } from '../api/RegisterApi';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const SignUpPage = () => {
+  const { userId } = useParams();
+
   const [services, setServices] = useState([{ name: '', price: '', time: '' }]);
   const [workingDays, setWorkingDays] = useState([]);
   const [workingHours, setWorkingHours] = useState({ from: '', to: '' });
@@ -69,7 +74,6 @@ const SignUpPage = () => {
     }
     return '';
   };
-  
 
   const handleServiceChange = (index, field, value) => {
     const updatedServices = [...services];
@@ -145,7 +149,13 @@ const SignUpPage = () => {
       }
     }
 
-    const nameFields = ['firstName', 'lastName', 'businessName', 'city','street'];
+    const nameFields = [
+      'firstName',
+      'lastName',
+      'businessName',
+      'city',
+      'street',
+    ];
     nameFields.forEach((field) => {
       if (!/^[A-Za-z\u0590-\u05FF\s-]+$/.test(businessData[field])) {
         newErrors[field] = 'This field must contain letters';
@@ -155,16 +165,14 @@ const SignUpPage = () => {
       }
     });
 
-
-  if (!/^\d+$/.test(businessData.houseNumber)) {
-    newErrors.houseNumber = 'House number must be numeric';
-    missingFields.push('House number');
-  }
+    if (!/^\d+$/.test(businessData.houseNumber)) {
+      newErrors.houseNumber = 'House number must be numeric';
+      missingFields.push('House number');
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
 
   const handleRegister = async () => {
     if (!validateFields()) return;
@@ -196,99 +204,165 @@ const SignUpPage = () => {
         setTimeout(() => (window.location.href = '/'), 2000);
       }
     } catch (error) {
-      setAlertMessage('An error occurred during the registration process. Try again.');
+      setAlertMessage(
+        'An error occurred during the registration process. Try again.'
+      );
       setAlertSeverity('error');
       setAlertOpen(true);
     }
     setIsLoading(false);
   };
+  const handleUpdate = async () => {
+    setIsLoading(true);
+    const dataToUpdate = {
+      ...businessData,
+      address: {
+        city: businessData.city,
+        street: businessData.street,
+        houseNumber: businessData.houseNumber,
+        floor: businessData.floor,
+        apartment: businessData.apartment,
+      },
+      services,
+      workingDays,
+      workingHours,
+    };
 
+    try {
+      const docRef = doc(db, 'businesses', userId);
+      await updateDoc(docRef, dataToUpdate);
+
+      setAlertMessage('Business updated successfully!');
+      setAlertSeverity('success');
+      setAlertOpen(true);
+      window.location.href = '/';
+    } catch (error) {
+      setAlertMessage('Failed to update business. Try again.');
+      setAlertSeverity('error');
+      setAlertOpen(true);
+      console.error('Error updating business:', error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (!userId) return;
+    const fetchBusinessData = async () => {
+      try {
+        const docRef = doc(db, 'businesses', userId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          console.log(data);
+          setBusinessData({
+            ...businessData,
+            ...data,
+          });
+          setServices(data.services || []);
+          setWorkingDays(data.workingDays || []);
+          setWorkingHours(data.workingHours || { from: '', to: '' });
+        } else {
+          alert('Business not found.');
+        }
+      } catch (error) {
+        console.error('Error fetching business data:', error);
+      }
+    };
+
+    fetchBusinessData();
+  }, [userId]);
   return (
     <Stack spacing={2} alignItems='center' sx={{ paddingBottom: 4 }}>
       <FrostedBackground>
         <Typography variant='h3' mb={4}>
-        Create business
+          {userId ? 'Edit' : 'Create'} business
         </Typography>
 
         {/* Personal Information Section */}
-        <Typography variant='h5'>PERSONAL DETAILS</Typography>
-        <Stack spacing={2} mb={4}>
-          <TextField
-            variant='outlined'
-            label='First name'
-            fullWidth
-            required
-            onChange={(e) => handleInputChange('firstName', e.target.value)}
-            error={!!errors.firstName}
-            helperText={errors.firstName}
-          />
-          <TextField
-            variant='outlined'
-            label='Last name'
-            fullWidth
-            required
-            onChange={(e) => handleInputChange('lastName', e.target.value)}
-            error={!!errors.lastName}
-            helperText={errors.lastName}
-          />
-          <TextField
-            variant='outlined'
-            label='Email'
-            fullWidth
-            type='email'
-            required
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            error={!!errors.email}
-            helperText={errors.email}
-          />
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <TextField
-              variant="outlined"
-              label="Password"
-              fullWidth
-              type="password"
-              required
-              value={businessData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-            
-            <Tooltip
-              title={
-                <div>
-                  <Typography>Password Requirements:</Typography>
-                  <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    <li>Password must be at least 8 characters</li>
-                    <li>Must include an uppercase letter</li>
-                    <li>Must include a number</li>
-                  </ul>
-                </div>
-              }
-              placement="right"
-              arrow
-            >
-              <IconButton>
-                <InfoOutlinedIcon color="info" />
-              </IconButton>
-            </Tooltip>
+        {!userId && (
+          <Stack>
+            <Typography variant='h5'>PERSONAL DETAILS</Typography>
+            <Stack spacing={2} mb={4}>
+              <TextField
+                variant='outlined'
+                label='First name'
+                fullWidth
+                required
+                onChange={(e) => handleInputChange('firstName', e.target.value)}
+                error={!!errors.firstName}
+                helperText={errors.firstName}
+              />
+              <TextField
+                variant='outlined'
+                label='Last name'
+                fullWidth
+                required
+                onChange={(e) => handleInputChange('lastName', e.target.value)}
+                error={!!errors.lastName}
+                helperText={errors.lastName}
+              />
+              <TextField
+                variant='outlined'
+                label='Email'
+                fullWidth
+                type='email'
+                required
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                error={!!errors.email}
+                helperText={errors.email}
+              />
+              <Stack direction='row' alignItems='center' spacing={1}>
+                <TextField
+                  variant='outlined'
+                  label='Password'
+                  fullWidth
+                  type='password'
+                  required
+                  value={businessData.password}
+                  onChange={(e) =>
+                    handleInputChange('password', e.target.value)
+                  }
+                  error={!!errors.password}
+                  helperText={errors.password}
+                />
+
+                <Tooltip
+                  title={
+                    <div>
+                      <Typography>Password Requirements:</Typography>
+                      <ul style={{ margin: 0, paddingLeft: '20px' }}>
+                        <li>Password must be at least 8 characters</li>
+                        <li>Must include an uppercase letter</li>
+                        <li>Must include a number</li>
+                      </ul>
+                    </div>
+                  }
+                  placement='right'
+                  arrow
+                >
+                  <IconButton>
+                    <InfoOutlinedIcon color='info' />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+
+              <TextField
+                variant='outlined'
+                label='Password verification'
+                fullWidth
+                type='password'
+                required
+                value={businessData?.confirmPassword}
+                onChange={(e) =>
+                  handleInputChange('confirmPassword', e.target.value)
+                }
+                error={!!errors.confirmPassword}
+                helperText={errors.confirmPassword}
+              />
+            </Stack>
           </Stack>
-
-          <TextField
-            variant='outlined'
-            label='Password verification'
-            fullWidth
-            type='password'
-            required
-            value={businessData.confirmPassword}
-            onChange={(e) =>
-              handleInputChange('confirmPassword', e.target.value)
-            }
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword}
-          />
-        </Stack>
-
+        )}
         {/* Business Information Section */}
         <Typography variant='h5'>BUSINESS DETAILS</Typography>
         <Stack spacing={2} mb={4}>
@@ -297,6 +371,7 @@ const SignUpPage = () => {
             label='Business name'
             fullWidth
             required
+            value={businessData?.businessName}
             onChange={(e) => handleInputChange('businessName', e.target.value)}
             error={!!errors.businessName}
             helperText={errors.businessName}
@@ -306,6 +381,7 @@ const SignUpPage = () => {
             label='Phone number'
             fullWidth
             required
+            value={businessData?.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             error={!!errors.phone}
             helperText={errors.phone}
@@ -319,6 +395,7 @@ const SignUpPage = () => {
             onChange={(e) => handleInputChange('category', e.target.value)}
             error={!!errors.category}
             helperText={errors.category}
+            value={businessData?.category || ''}
           >
             {CATEGORIES.map((category) => (
               <MenuItem key={category} value={category}>
@@ -332,6 +409,7 @@ const SignUpPage = () => {
             fullWidth
             multiline
             rows={5}
+            value={businessData?.description}
             onChange={(e) => handleInputChange('description', e.target.value)}
           />
           <TextField
@@ -339,6 +417,7 @@ const SignUpPage = () => {
             label='City'
             fullWidth
             required
+            value={businessData?.city}
             onChange={(e) => handleInputChange('city', e.target.value)}
             error={!!errors.city}
             helperText={errors.city}
@@ -347,6 +426,7 @@ const SignUpPage = () => {
             variant='outlined'
             label='Street'
             fullWidth
+            value={businessData?.street}
             required
             onChange={(e) => handleInputChange('street', e.target.value)}
             error={!!errors.street}
@@ -357,6 +437,7 @@ const SignUpPage = () => {
             label='House number'
             fullWidth
             required
+            value={businessData?.houseNumber}
             onChange={(e) => handleInputChange('houseNumber', e.target.value)}
             error={!!errors.houseNumber}
             helperText={errors.houseNumber}
@@ -365,24 +446,28 @@ const SignUpPage = () => {
             variant='outlined'
             label='Floor'
             fullWidth
+            value={businessData?.floor}
             onChange={(e) => handleInputChange('floor', e.target.value)}
           />
           <TextField
             variant='outlined'
             label='Apartment number'
             fullWidth
+            value={businessData?.apartment}
             onChange={(e) => handleInputChange('apartment', e.target.value)}
           />
           <TextField
-            variant="outlined"
-            label="Instagram account name"
+            variant='outlined'
+            label='Instagram account name'
             fullWidth
+            value={businessData?.instagram}
             onChange={(e) => handleInputChange('instagram', e.target.value)}
           />
           <TextField
-            variant="outlined"
-            label="Facebook account name"
+            variant='outlined'
+            label='Facebook account name'
             fullWidth
+            value={businessData?.facebook}
             onChange={(e) => handleInputChange('facebook', e.target.value)}
           />
         </Stack>
@@ -408,7 +493,7 @@ const SignUpPage = () => {
           <Stack spacing={2} alignItems='center'>
             <Typography>Select working hours</Typography>
             <Stack direction='row' spacing={2} flexWrap='wrap'>
-            <TextField
+              <TextField
                 label='From hour'
                 type='time'
                 value={workingHours.from}
@@ -481,13 +566,21 @@ const SignUpPage = () => {
             variant='contained'
             color='primary'
             sx={{ width: '200px' }}
-            onClick={handleRegister}
+            onClick={() => {
+              if (userId) {
+                handleUpdate();
+                return;
+              }
+              handleRegister();
+            }}
           >
             {isLoading ? (
               <CircularProgress
                 size={24}
                 sx={{ color: 'white' }}
               ></CircularProgress>
+            ) : userId ? (
+              'save changes'
             ) : (
               'registration'
             )}
@@ -500,7 +593,11 @@ const SignUpPage = () => {
         autoHideDuration={10000}
         onClose={() => setAlertOpen(false)}
       >
-        <Alert onClose={() => setAlertOpen(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setAlertOpen(false)}
+          severity={alertSeverity}
+          sx={{ width: '100%' }}
+        >
           {alertMessage}
         </Alert>
       </Snackbar>
