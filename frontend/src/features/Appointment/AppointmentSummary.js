@@ -66,11 +66,11 @@ const AppointmentSummary = ({
       <Typography variant='h4' textAlign='center'>
         Meeting summary
       </Typography>
-      <Typography variant='h6' textAlign='center' color='gray'>
+      <Typography variant='h6' textAlign='center'>
         {selectedOption}
       </Typography>
-      <Typography variant='body2'>date: {selectedDate}</Typography>
-      <Typography variant='body1'>hour: {selectedTime}</Typography>
+      <Typography variant='body1'>Date: {selectedDate}</Typography>
+      <Typography variant='body1'>Hour: {selectedTime}</Typography>
       <TextField
         variant='outlined'
         label='full name'

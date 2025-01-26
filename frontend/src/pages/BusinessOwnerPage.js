@@ -119,7 +119,7 @@ const BusinessOwnerPage = ({ userId }) => {
           </div>
 
           {/* Schedule Button */}
-          <ScheduleButton onClick={handleScheduleAppointment} text='schedule' />
+          <ScheduleButton onClick={handleScheduleAppointment} text='Schedule' />
 
           {/* Images */}
           <ImagesGrid images={data.images || []} />
