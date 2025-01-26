@@ -251,7 +251,7 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    // Authentication & Validation
+    // Authorization validation
     if (!userId || !isLoggedIn || userId != isLoggedIn) {
       history.push('/signup');
       return;
