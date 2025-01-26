@@ -129,7 +129,7 @@ const SchedulerPage = () => {
               }}
               variant='contained'
             >
-              חזרה לתצוגה חודשית{' '}
+              Monthly view{' '}
             </Button>
           )}
           <Stack sx={{ backgroundColor: 'white', overflowY: 'auto' }}>
