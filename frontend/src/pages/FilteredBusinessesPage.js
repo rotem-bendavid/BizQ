@@ -106,10 +106,27 @@ const FilteredBusinessesPage = () => {
     history.push(`/BusinessOwner/${id}`);
   };
 
-  if (loading) return <CircularProgress sx={{ margin: 'auto' }} />;
+  if (loading)
+  return (
+    <Stack
+      alignItems="center"
+      justifyContent="center"
+      sx={{ height: '80vh' }}
+    >
+      <FrostedBackground>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: '100%' }}
+        >
+          <CircularProgress />
+        </Stack>
+      </FrostedBackground>
+    </Stack>
+  );
 
   return (
-    <Stack alignItems="center" sx={{ height: '85vh' }}>
+    <Stack alignItems="center" sx={{ height: '80vh' }}>
       <FrostedBackground>
         <Stack spacing={3}>
           {/* Show user city */}
@@ -169,9 +186,10 @@ const FilteredBusinessesPage = () => {
           {/* Filtered Businesses */}
           <Stack
             sx={{
-              overflowY: 'scroll',
+              width: '1000px',
+              overflowY: 'auto',
               height: '50vh',
-              paddingBottom: '10px',
+              paddingBottom: '5px',
             }}
           >
             <Stack spacing={3}>

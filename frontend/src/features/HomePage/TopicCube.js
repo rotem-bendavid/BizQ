@@ -43,7 +43,7 @@ const TopicCube = ({ topicObj }) => {
           },
         }}
       >
-        <Typography variant='h4' sx={{ color: 'black', fontWeight: '700' }}>
+        <Typography variant='h4' sx={{ color: 'black', fontWeight: '700', textTransform: 'none' }}>
           {topicObj.name}
         </Typography>
       </Stack>

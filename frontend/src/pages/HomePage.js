@@ -26,7 +26,7 @@ const HomePage = () => {
          Smart scheduling platform
         </Typography>
         <Typography variant="h4">
-          connecting businesses and customers in one simple solution
+          Connecting businesses and customers in one simple solution
         </Typography>
         <Stack
           direction="row"
