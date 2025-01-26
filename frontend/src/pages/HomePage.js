@@ -48,7 +48,7 @@ const HomePage = () => {
           variant="contained"
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         >
-          <Typography variant="h5"> Show all</Typography>
+          <Typography variant="h5" sx={{ textTransform: 'none' }}> Show all</Typography>
         </Button>
       </FrostedBackground>
     </Stack>

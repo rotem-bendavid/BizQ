@@ -4,9 +4,9 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import '../App.css';
 import Background from '../features/Generics/Background';
 import { useNavigate } from 'react-router-dom';
+import { CATEGORIES } from '../features/SignUpPage/data';
 
 const BusinessesByCategoryPage = () => {
-  const [categories] = useState(['Aesthetics', 'Hair salons', 'Health', 'Fitness', 'Education']);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [businesses, setBusinesses] = useState([]);
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const BusinessesByCategoryPage = () => {
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
           <option value="">Select a Category</option>
-          {categories.map((category, index) => (
+          {CATEGORIES.map((category, index) => (
             <option key={index} value={category}>
               {category}
             </option>
