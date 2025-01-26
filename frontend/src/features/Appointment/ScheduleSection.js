@@ -17,7 +17,7 @@ const ScheduleSection = ({ selectedDate, onDateSelect, workingDays }) => {
 
   return (
     <Stack spacing={-2} alignItems='center'>
-      <Typography variant='h2'>בחרו תאריך</Typography>
+      <Typography variant='h4'>Choose Date</Typography>
       <Stack sx={{ scale: '0.8' }} alignItems={'start'}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <StaticDatePicker
