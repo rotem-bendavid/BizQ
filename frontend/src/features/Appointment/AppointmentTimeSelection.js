@@ -24,11 +24,7 @@ const AppointmentTimeSelection = ({
       setIsLoading(true);
       try {
         // Validate inputs
-        if (
-          !selectedDate ||
-          !businessData?.userId ||
-          !appointmentData?.typeId
-        ) {
+        if (!selectedDate || !businessData?.userId) {
           throw new Error('Missing required data for scheduling.');
         }
 

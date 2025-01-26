@@ -9,30 +9,72 @@ import {
   DayView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import WestIcon from '@mui/icons-material/West';
-import { Button, Paper, Stack } from '@mui/material';
+import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import FrostedBackground from '../features/FrostedBackground';
 import { useIsLoggedIn } from '../utils/auth';
-import { getAllAppointments } from '../api/Appointment';
+import { cancelAppointment, getAllAppointments } from '../api/Appointment';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SchedulerPage = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentViewName, setCurrentViewName] = useState('Month');
   const [schedulerData, setSchedulerData] = useState([]);
   const isLoggedIn = useIsLoggedIn();
-
+  const history = useHistory();
   const CustomAppointment = ({ children, data, ...restProps }) => {
     const handleClick = () => {
       setCurrentDate(data?.startDate); // Change to the clicked day
       setCurrentViewName('Day');
     };
 
+    const handleCancelAppointment = async (appointmentId) => {
+      if (window.confirm(`האם אתם בטוחים שאתם רוצים לבטל את התור?`)) {
+        try {
+          const result = await cancelAppointment(appointmentId);
+
+          if (result.success) {
+            alert('התור בוטל בהצלחה');
+            // Optionally, refresh appointments data
+            setSchedulerData((prevData) =>
+              prevData.filter((appointment) => appointment.id !== appointmentId)
+            );
+          } else {
+            alert(`התור לא בוטל אנו נסו שוב`);
+          }
+        } catch (error) {
+          console.log(`An error occurred: ${error.message}`);
+        }
+      }
+    };
+
     return (
       <Appointments.Appointment {...restProps} onClick={handleClick}>
-        {children}
+        <div style={{ position: 'relative', padding: '10px' }}>
+          {children}
+          {currentViewName === 'Day' && (
+            <Button
+              size='small'
+              color='error'
+              variant='contained'
+              style={{
+                position: 'absolute',
+                top: '5px',
+                right: '5px',
+              }}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent triggering the appointment click event
+                handleCancelAppointment(data?.id);
+              }}
+            >
+              ביטול תור
+            </Button>
+          )}
+        </div>
       </Appointments.Appointment>
     );
   };
+
   const CustomTimeTableCell = ({ startDate, ...restProps }) => {
     const handleDayClick = () => {
       console.log(startDate);
@@ -61,7 +103,16 @@ const SchedulerPage = () => {
     });
   }, []);
   return (
-    <Stack alignItems={'center'}>
+    <Stack alignItems={'center'} spacing={1}>
+      <Button
+        variant='contained'
+        sx={{ backgroundColor: 'black', borderRadius: '30px' }}
+        onClick={() => {
+          history.push(`/signup/${isLoggedIn}`);
+        }}
+      >
+        <Typography variant='h5'>עריכת עסק</Typography>
+      </Button>
       <FrostedBackground>
         {currentViewName !== 'Month' && (
           <Button
