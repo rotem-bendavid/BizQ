@@ -14,15 +14,15 @@ const CancelAppointment = () => {
   const [appointment, setAppointment] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const handleCancelAppointment = async (appointmentId) => {
-    if (window.confirm(`האם אתם בטוחים שאתם רוצים לבטל את התור?`)) {
+    if (window.confirm(`Are you sure you want to cancel the appointment?`)) {
       try {
         const result = await cancelAppointment(appointmentId);
 
         if (result.success) {
-          alert('התור בוטל בהצלחה');
+          alert('Appointment Cancelled Successfully');
           history.push('/');
         } else {
-          alert(`התור לא בוטל אנו נסו שוב`);
+          alert(`Error occured, Please try to cancel the appointment again`);
         }
       } catch (error) {
         console.log(`An error occurred: ${error.message}`);
@@ -32,6 +32,11 @@ const CancelAppointment = () => {
   useEffect(() => {
     setIsLoading(true);
     getAppointment(appointmentId).then((data) => {
+      if (!data || !data.success) {
+        alert('No appointment found');
+        history.push('/');
+      }
+
       console.log(data?.data);
       setAppointment(data?.data);
       setIsLoading(false);
@@ -45,7 +50,7 @@ const CancelAppointment = () => {
             variant='h5'
             sx={{ direction: 'rtl', width: '100%', textAlign: 'start' }}
           >
-            התור שלך:
+            Appointment:
           </Typography>
           {isLoading ? (
             <CircularProgress
@@ -63,7 +68,7 @@ const CancelAppointment = () => {
               <Stack>
                 <Typography variant='h6'>{appointment?.service} </Typography>
                 <Typography>
-                  בתאריך{' '}
+                  Date{' '}
                   {dayjs(appointment?.startDate).format('DD/MM/YYYY H:mm')}
                 </Typography>
               </Stack>
@@ -72,7 +77,7 @@ const CancelAppointment = () => {
                 variant='contained'
                 color='error'
               >
-                ביטול התור
+                Cancel Appointment
               </Button>
             </Stack>
           )}

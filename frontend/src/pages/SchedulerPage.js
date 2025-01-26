@@ -29,18 +29,18 @@ const SchedulerPage = () => {
     };
 
     const handleCancelAppointment = async (appointmentId) => {
-      if (window.confirm(`האם אתם בטוחים שאתם רוצים לבטל את התור?`)) {
+      if (window.confirm(`Are you sure you want to cancel the appointment?`)) {
         try {
           const result = await cancelAppointment(appointmentId);
 
           if (result.success) {
-            alert('התור בוטל בהצלחה');
+            alert('Appointment Cancelled Successfully');
             // Optionally, refresh appointments data
             setSchedulerData((prevData) =>
               prevData.filter((appointment) => appointment.id !== appointmentId)
             );
           } else {
-            alert(`התור לא בוטל אנו נסו שוב`);
+            alert(`Error occured, Please try to cancel the appointment again`);
           }
         } catch (error) {
           console.log(`An error occurred: ${error.message}`);
@@ -67,7 +67,7 @@ const SchedulerPage = () => {
                 handleCancelAppointment(data?.id);
               }}
             >
-              ביטול תור
+              Cancel appointment
             </Button>
           )}
         </div>
