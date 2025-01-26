@@ -19,10 +19,14 @@ const HomePage = () => {
   return (
     <Stack alignItems="center" sx={{ height: '80vh', overflowY: 'hidden' }}>
       <FrostedBackground>
-        <Typography variant="h1">BizQ</Typography>
-        <Typography variant="h4">פלטפורמת תזמון חכמה</Typography>
+       <Typography variant="h1">
+        BizQ
+        </Typography>
         <Typography variant="h4">
-          מחברת עסקים ולקוחות בפתרון אחד פשוט
+         Smart scheduling platform
+        </Typography>
+        <Typography variant="h4">
+          connecting businesses and customers in one simple solution
         </Typography>
         <Stack
           direction="row"
@@ -44,7 +48,7 @@ const HomePage = () => {
           variant="contained"
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         >
-          <Typography variant="h5">הצג הכל</Typography>
+          <Typography variant="h5"> Show all</Typography>
         </Button>
       </FrostedBackground>
     </Stack>

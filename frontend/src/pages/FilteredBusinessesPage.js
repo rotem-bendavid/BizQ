@@ -8,7 +8,6 @@ import {
   CircularProgress,
   Card,
   CardContent,
-  Button,
   TextField,
   IconButton,
 } from '@mui/material';
@@ -25,22 +24,24 @@ const FilteredBusinessesPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [userCity, setUserCity] = useState('');
+  const [manualCity, setManualCity] = useState(''); // Manual city input
 
   useEffect(() => {
     const fetchLocationAndBusinesses = async () => {
       setLoading(true);
-
       try {
+        // Fetch user's city from IP
         const location = await getLocationByIP();
         const city = location?.city || 'Unknown';
         setUserCity(city);
 
+        // Fetch businesses from Firestore
         const businessesRef = collection(db, 'businesses');
         let q;
         if (category && category !== 'all') {
           q = query(businessesRef, where('category', '==', category));
         } else {
-          q = query(businessesRef); // Get all businesses if "all" category
+          q = query(businessesRef);
         }
 
         const querySnapshot = await getDocs(q);
@@ -48,18 +49,9 @@ const FilteredBusinessesPage = () => {
           id: doc.id,
           ...doc.data(),
         }));
-        // Apply location filtering only if a specific category is selected
-        const locationFilteredBusinesses =
-          category === 'all'
-            ? fetchedBusinesses // Show all businesses without filtering by location
-            : fetchedBusinesses.filter(
-                (business) =>
-                  business.address?.city.toLowerCase() ===
-                    city?.toLowerCase() || business.address?.city === 'Unknown'
-              );
-        console.log('');
-        setBusinesses(locationFilteredBusinesses);
-        setFilteredBusinesses(locationFilteredBusinesses);
+
+        setBusinesses(fetchedBusinesses);
+        setFilteredBusinesses(fetchedBusinesses);
       } catch (error) {
         console.error('Error fetching businesses or location:', error);
       } finally {
@@ -73,13 +65,29 @@ const FilteredBusinessesPage = () => {
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
     setSearchTerm(value);
+    filterBusinesses(value, manualCity);
+  };
 
-    const filtered = businesses.filter(
-      (business) =>
-        business.businessName.toLowerCase().includes(value) ||
+  const handleLocationInput = (event) => {
+    const value = event.target.value.toLowerCase();
+    setManualCity(value);
+    filterBusinesses(searchTerm, value);
+  };
+
+  const filterBusinesses = (search, city) => {
+    const filtered = businesses.filter((business) => {
+      const matchesSearch =
+        business.businessName.toLowerCase().includes(search) ||
         (business.description &&
-          business.description.toLowerCase().includes(value))
-    );
+          business.description.toLowerCase().includes(search));
+      const matchesCity =
+        !city || // No manual city filter applied
+        (business.address?.city &&
+          business.address.city.toLowerCase().includes(city));
+
+      return matchesSearch && matchesCity;
+    });
+
     setFilteredBusinesses(filtered);
   };
 
@@ -90,24 +98,24 @@ const FilteredBusinessesPage = () => {
   if (loading) return <CircularProgress sx={{ margin: 'auto' }} />;
 
   return (
-    <Stack alignItems='center' sx={{ height: '85vh' }}>
+    <Stack alignItems="center" sx={{ height: '85vh' }}>
       <FrostedBackground>
         <Stack spacing={3}>
           {/* Show user city */}
           {category !== 'all' && (
             <Typography
-              variant='h6'
-              align='center'
+              variant="h6"
+              align="center"
               sx={{ marginBottom: '10px' }}
             >
               Showing results for your city: {userCity}
             </Typography>
           )}
 
-          {/* Search Bar */}
+          {/* Search and Location Input */}
           <Stack
-            direction='row'
-            alignItems='center'
+            direction="row"
+            alignItems="center"
             spacing={2}
             sx={{
               backgroundColor: 'white',
@@ -117,11 +125,25 @@ const FilteredBusinessesPage = () => {
               marginBottom: '20px',
             }}
           >
+            {/* Search Bar */}
             <TextField
               fullWidth
-              placeholder='חפש לפי שם או תיאור'
+              placeholder="Search by name or description"
               value={searchTerm}
               onChange={handleSearch}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '20px',
+                },
+              }}
+            />
+
+            {/* Manual City Input */}
+            <TextField
+              fullWidth
+              placeholder="Enter a city"
+              value={manualCity}
+              onChange={handleLocationInput}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: '20px',
@@ -133,6 +155,7 @@ const FilteredBusinessesPage = () => {
             </IconButton>
           </Stack>
 
+          {/* Filtered Businesses */}
           <Stack
             sx={{
               overflowY: 'scroll',
@@ -157,7 +180,7 @@ const FilteredBusinessesPage = () => {
                   >
                     <CardContent>
                       <Typography
-                        variant='h6'
+                        variant="h6"
                         sx={{
                           direction: isHebrew(business?.businessName)
                             ? 'rtl'
@@ -171,11 +194,11 @@ const FilteredBusinessesPage = () => {
                           direction: isHebrew(business?.description)
                             ? 'rtl'
                             : 'ltr',
-                          display: '-webkit-box', // Enable the line clamping
-                          WebkitBoxOrient: 'vertical', // Set box orientation to vertical
-                          overflow: 'hidden', // Hide the overflowing text
-                          textOverflow: 'ellipsis', // Add "..." for overflow
-                          WebkitLineClamp: 3, // Limit to 3 lines
+                          display: '-webkit-box',
+                          WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          WebkitLineClamp: 3,
                         }}
                       >
                         {business.description || 'No description available.'}
@@ -187,8 +210,8 @@ const FilteredBusinessesPage = () => {
                   </Card>
                 ))
               ) : (
-                <Typography variant='body1' align='center'>
-                  לא נמצאו עסקים תואמים
+                <Typography variant="body1" align="center">
+                  No matching businesses found.
                 </Typography>
               )}
             </Stack>
