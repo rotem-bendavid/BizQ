@@ -145,7 +145,7 @@ const SchedulerPage = () => {
               {currentViewName === 'Month' ? (
                 <MonthView timeTableCellComponent={CustomTimeTableCell} />
               ) : (
-                <DayView startDayHour={8} endDayHour={18} />
+                <DayView startDayHour={6} endDayHour={22} />
               )}{' '}
               <Toolbar />
               <DateNavigator />
