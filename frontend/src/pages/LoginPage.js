@@ -23,8 +23,7 @@ const LoginPage = () => {
         alert(response.message);
         return;
       }
-      window.location.href = '/';
-      // Handle successful login (e.g., navigate, store token)
+      window.location.href = '/SchedulerPage';
     } catch (error) {
       alert(error.message);
     } finally {
@@ -35,8 +34,8 @@ const LoginPage = () => {
   return (
     <Stack alignItems='center' justifyContent='center'>
       <FrostedBackground>
-        <Typography variant='h2' gutterBottom>
-        business owner login
+        <Typography variant='h3' gutterBottom>
+        Business owner login
         </Typography>
 
         <form onSubmit={handleLogin}>
