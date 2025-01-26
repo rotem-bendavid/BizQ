@@ -32,7 +32,7 @@ const NavBar = () => {
           else history.push('/signup');
         }}
       >
-        <Typography variant='h5'>{isLoggedIn ? 'Log out' : 'Sign up'}</Typography>
+        <Typography variant='h5' sx={{ textTransform: 'none' }}>{isLoggedIn ? 'Log out' : 'Sign up'}</Typography>
       </Button>
       <Button
         variant='contained'
@@ -55,7 +55,7 @@ const NavBar = () => {
           else history.push('/login');
         }}
       >
-        <Typography variant='h5'>
+        <Typography variant='h5' sx={{ textTransform: 'none' }}>
           {isLoggedIn ? 'My Calendar' : 'Log in'}
         </Typography>
       </Button>
