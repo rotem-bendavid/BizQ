@@ -63,13 +63,19 @@ const AppointmentBlock = ({ setIsAppointmentMode, businessData }) => {
     const appointmentTime = Number(
       businessData?.services[appointmentData.typeId].time
     );
-    const startDate = new Date(year, month - 1, day, hours, minutes);
+    const startDate = new Date(year, month - 1, day, hours, minutes); // We save the start date in UTC
 
     // Calculate the endDate by adding appointmentTime (in minutes)
     const endDate = new Date(startDate.getTime() + appointmentTime * 60000);
+
+    // Remove the "time" from appointmentData after calculating startDate & endDate
+    const { date, time, ...appointmentDataToSubmit } = appointmentData;
+    console.log('handleSubmit: ', appointmentDataToSubmit);
+    debugger;
+
     const dataToSubmit = {
       businessId: businessData?.id,
-      ...appointmentData,
+      ...appointmentDataToSubmit,
       startDate,
       endDate,
       service: businessData?.services[appointmentData.typeId].name,
