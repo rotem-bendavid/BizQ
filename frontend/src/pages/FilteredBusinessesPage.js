@@ -11,7 +11,7 @@ import {
   TextField,
   IconButton,
 } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import SearchIcon from '@mui/icons-material/Search';
 import { getLocationByIP } from '../api/Location';
 import { isHebrew } from '../utils/common';
@@ -23,17 +23,22 @@ const FilteredBusinessesPage = () => {
   const [filteredBusinesses, setFilteredBusinesses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [userCity, setUserCity] = useState('');
   const [manualCity, setManualCity] = useState(''); // Manual city input
+  const [userCityText, setUserCityText] = useState('');
 
   useEffect(() => {
     const fetchLocationAndBusinesses = async () => {
       setLoading(true);
       try {
-        // Fetch user's city from IP
+        // Fetch user's city from IP and set it as the default manualCity
         const location = await getLocationByIP();
-        const city = location?.city || 'Unknown';
-        setUserCity(city);
+        let city = location?.city || '';
+        city = city.toLowerCase();
+        setManualCity(city);
+        setUserCityText(`Showing results for your city: ${city}`);
+        if (city == '') {
+          setUserCityText(`Couldn't find your location`);
+        }
 
         // Fetch businesses from Firestore
         const businessesRef = collection(db, 'businesses');
@@ -52,6 +57,11 @@ const FilteredBusinessesPage = () => {
 
         setBusinesses(fetchedBusinesses);
         setFilteredBusinesses(fetchedBusinesses);
+
+        // Filter businesses directly using the `city` variable
+        if (city != '') {
+          filterBusinesses(searchTerm, city);
+        }
       } catch (error) {
         console.error('Error fetching businesses or location:', error);
       } finally {
@@ -69,6 +79,7 @@ const FilteredBusinessesPage = () => {
   };
 
   const handleLocationInput = (event) => {
+    setUserCityText('');
     const value = event.target.value.toLowerCase();
     setManualCity(value);
     filterBusinesses(searchTerm, value);
@@ -95,10 +106,27 @@ const FilteredBusinessesPage = () => {
     history.push(`/BusinessOwner/${id}`);
   };
 
-  if (loading) return <CircularProgress sx={{ margin: 'auto' }} />;
+  if (loading)
+  return (
+    <Stack
+      alignItems="center"
+      justifyContent="center"
+      sx={{ height: '80vh' }}
+    >
+      <FrostedBackground>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: '100%' }}
+        >
+          <CircularProgress />
+        </Stack>
+      </FrostedBackground>
+    </Stack>
+  );
 
   return (
-    <Stack alignItems="center" sx={{ height: '85vh' }}>
+    <Stack alignItems="center" sx={{ height: '80vh' }}>
       <FrostedBackground>
         <Stack spacing={3}>
           {/* Show user city */}
@@ -108,7 +136,7 @@ const FilteredBusinessesPage = () => {
               align="center"
               sx={{ marginBottom: '10px' }}
             >
-              Showing results for your city: {userCity}
+              {userCityText}
             </Typography>
           )}
 
@@ -158,9 +186,10 @@ const FilteredBusinessesPage = () => {
           {/* Filtered Businesses */}
           <Stack
             sx={{
-              overflowY: 'scroll',
+              width: '1000px',
+              overflowY: 'auto',
               height: '50vh',
-              paddingBottom: '10px',
+              paddingBottom: '5px',
             }}
           >
             <Stack spacing={3}>

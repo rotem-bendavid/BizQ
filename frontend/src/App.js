@@ -4,7 +4,7 @@ import NavBar from './features/Generics/NavBar';
 import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import FilteredBusinessesPage from './pages/FilteredBusinessesPage';
-import BackGround from './features/BackGround';
+import Background from './features/Generics/Background';
 import LoginPage from './pages/LoginPage';
 import AppointmentPage from './pages/AppointmentPage';
 import BusinessOwnerPage from './pages/BusinessOwnerPage';
@@ -20,7 +20,7 @@ function App() {
   }, []);
   return (
     <Router>
-      <BackGround />
+      <Background />
       <div
         className='app_page'
         style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}

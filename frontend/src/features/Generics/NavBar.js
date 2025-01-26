@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Stack, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { logOut, useIsLoggedIn } from '../../utils/auth';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -33,7 +32,7 @@ const NavBar = () => {
           else history.push('/signup');
         }}
       >
-        <Typography variant='h5'>{isLoggedIn ? 'Log out' : 'Sign up'}</Typography>
+        <Typography variant='h5' sx={{ textTransform: 'none' }}>{isLoggedIn ? 'Log out' : 'Sign up'}</Typography>
       </Button>
       <Button
         variant='contained'
@@ -56,8 +55,8 @@ const NavBar = () => {
           else history.push('/login');
         }}
       >
-        <Typography variant='h5'>
-          {isLoggedIn ? 'My Calander' : 'Log in'}
+        <Typography variant='h5' sx={{ textTransform: 'none' }}>
+          {isLoggedIn ? 'My Business' : 'Log in'}
         </Typography>
       </Button>
     </Stack>

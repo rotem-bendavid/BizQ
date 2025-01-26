@@ -11,7 +11,7 @@ import {
 import WestIcon from '@mui/icons-material/West';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { useIsLoggedIn } from '../utils/auth';
 import { cancelAppointment, getAllAppointments } from '../api/Appointment';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
@@ -103,54 +103,56 @@ const SchedulerPage = () => {
     });
   }, []);
   return (
-    <Stack alignItems={'center'} spacing={1}>
-      <Button
-        variant='contained'
-        sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        onClick={() => {
-          history.push(`/signup/${isLoggedIn}`);
-        }}
-      >
-        <Typography variant='h5'>עריכת עסק</Typography>
-      </Button>
+    <Stack alignItems={'center'} spacing={1} sx={{ height: '80vh' }}>
       <FrostedBackground>
-        {currentViewName !== 'Month' && (
           <Button
-            sx={{
-              position: 'absolute',
-              right: '60px',
-              top: '30px',
-              zIndex: '9999',
-            }}
-            onClick={() => {
-              setCurrentViewName('Month');
-            }}
             variant='contained'
+            sx={{ backgroundColor: 'blue', borderRadius: '30px' }}
+            onClick={() => {
+              history.push(`/signup/${isLoggedIn}`);
+            }}
           >
-            חזרה לתצוגה חודשית{' '}
+            <Typography variant='h5' sx={{ textTransform: 'none' }}>Edit Business</Typography>
           </Button>
-        )}
-        <Stack sx={{ backgroundColor: 'white' }}>
-          <Scheduler data={schedulerData}>
-            <ViewState
-              currentDate={currentDate} // Dynamically bind currentDate
-              onCurrentDateChange={(newDate) => setCurrentDate(newDate)} // Update state when toolbar changes the date
-              currentViewName={currentViewName}
-              onCurrentViewNameChange={(newViewName) =>
-                setCurrentViewName(newViewName)
-              } // Update state when the view changes
-            />
-            {currentViewName === 'Month' ? (
-              <MonthView timeTableCellComponent={CustomTimeTableCell} />
-            ) : (
-              <DayView startDayHour={8} endDayHour={18} />
-            )}{' '}
-            <Toolbar />
-            <DateNavigator />
-            <TodayButton />
-            <Appointments appointmentComponent={CustomAppointment} />
-          </Scheduler>
-        </Stack>
+          <br></br>
+
+          {currentViewName !== 'Month' && (
+            <Button
+              sx={{
+                position: 'absolute',
+                right: '60px',
+                top: '30px',
+                zIndex: '9999',
+              }}
+              onClick={() => {
+                setCurrentViewName('Month');
+              }}
+              variant='contained'
+            >
+              Monthly view{' '}
+            </Button>
+          )}
+          <Stack sx={{ backgroundColor: 'white', overflowY: 'auto' }}>
+            <Scheduler data={schedulerData}>
+              <ViewState
+                currentDate={currentDate} // Dynamically bind currentDate
+                onCurrentDateChange={(newDate) => setCurrentDate(newDate)} // Update state when toolbar changes the date
+                currentViewName={currentViewName}
+                onCurrentViewNameChange={(newViewName) =>
+                  setCurrentViewName(newViewName)
+                } // Update state when the view changes
+              />
+              {currentViewName === 'Month' ? (
+                <MonthView timeTableCellComponent={CustomTimeTableCell} />
+              ) : (
+                <DayView startDayHour={8} endDayHour={18} />
+              )}{' '}
+              <Toolbar />
+              <DateNavigator />
+              <TodayButton />
+              <Appointments appointmentComponent={CustomAppointment} />
+            </Scheduler>
+          </Stack>
       </FrostedBackground>
     </Stack>
   );

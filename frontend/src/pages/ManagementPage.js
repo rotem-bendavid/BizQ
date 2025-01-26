@@ -3,7 +3,7 @@ import { db, auth } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 import '../App.css';
-import BackGround from '../features/BackGround';
+import Background from '../features/Generics/Background';
 import { useNavigate } from 'react-router-dom';
 
 const ManagementPage = () => {
@@ -43,7 +43,7 @@ const ManagementPage = () => {
 
   return (
     <>
-      <BackGround />
+      <Background />
       <div className="container">
         <h1>Business Management</h1>
         {businessData ? (

@@ -15,7 +15,7 @@ import {
 } from '../features/BusinessOwnersPage/BusinessOwnerComponents';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import AppointmentBlock from '../features/Appointment/AppointmentBlock';
 
 const BusinessOwnerPage = ({ userId }) => {

@@ -1,6 +1,6 @@
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import AppointmentBlock from '../features/Appointment/AppointmentBlock';
 
 const AppointmentPage = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Typography, Stack } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
 import { useHistory } from 'react-router-dom';
@@ -26,7 +26,7 @@ const HomePage = () => {
          Smart scheduling platform
         </Typography>
         <Typography variant="h4">
-          connecting businesses and customers in one simple solution
+          Connecting businesses and customers in one simple solution
         </Typography>
         <Stack
           direction="row"
@@ -48,7 +48,7 @@ const HomePage = () => {
           variant="contained"
           sx={{ backgroundColor: 'black', borderRadius: '30px' }}
         >
-          <Typography variant="h5"> Show all</Typography>
+          <Typography variant="h5" sx={{ textTransform: 'none' }}> Show all</Typography>
         </Button>
       </FrostedBackground>
     </Stack>
