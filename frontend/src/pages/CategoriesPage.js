@@ -1,12 +1,12 @@
 import React from 'react';
 import '../App.css';
-import BackGround from '../features/BackGround';
+import Background from '../features/Generics/Background';
 import { CATEGORIES } from '../features/SignUpPage/data';
 
 const CategoriesPage = () => {
   return (
     <>
-      <BackGround />
+      <Background />
       <div className="container">
         <h1>CATEGORIES</h1>
         <ul>

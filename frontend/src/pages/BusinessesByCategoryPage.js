@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import '../App.css';
-import BackGround from '../features/BackGround';
+import Background from '../features/Generics/Background';
 import { useNavigate } from 'react-router-dom';
 
 const BusinessesByCategoryPage = () => {
@@ -33,7 +33,7 @@ const BusinessesByCategoryPage = () => {
 
   return (
     <>
-      <BackGround />
+      <Background />
       <div className="container">
         <h1>Businesses by Category</h1>
         <select

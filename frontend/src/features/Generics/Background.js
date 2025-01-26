@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material';
 
-const BackGround = () => (
+const Background = () => (
   <Stack
     sx={{
       backgroundImage: 'url(/static/wallpaper/BizQ.png)',
@@ -16,4 +16,4 @@ const BackGround = () => (
     }}
   ></Stack>
 );
-export default BackGround;
+export default Background;

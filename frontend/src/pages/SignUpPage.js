@@ -17,7 +17,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { WEEK_DAYS, CATEGORIES } from '../features/SignUpPage/data';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { registerBusiness } from '../api/RegisterApi';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';

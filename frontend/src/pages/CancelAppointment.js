@@ -1,6 +1,6 @@
 import { Button, CircularProgress, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import {
   useHistory,
   useParams,

@@ -11,7 +11,7 @@ import {
 import WestIcon from '@mui/icons-material/West';
 import { Button, Paper, Stack, Typography } from '@mui/material';
 import { ViewState } from '@devexpress/dx-react-scheduler';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { useIsLoggedIn } from '../utils/auth';
 import { cancelAppointment, getAllAppointments } from '../api/Appointment';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';

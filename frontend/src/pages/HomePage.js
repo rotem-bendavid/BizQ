@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Typography, Stack } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { TOPICS } from '../features/HomePage/data';
 import TopicCube from '../features/HomePage/TopicCube';
 import { useHistory } from 'react-router-dom';

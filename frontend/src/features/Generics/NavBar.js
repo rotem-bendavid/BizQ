@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Stack, Button, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
 import { logOut, useIsLoggedIn } from '../../utils/auth';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
@@ -57,7 +56,7 @@ const NavBar = () => {
         }}
       >
         <Typography variant='h5'>
-          {isLoggedIn ? 'My Calander' : 'Log in'}
+          {isLoggedIn ? 'My Calendar' : 'Log in'}
         </Typography>
       </Button>
     </Stack>

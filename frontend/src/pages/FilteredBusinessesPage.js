@@ -11,7 +11,7 @@ import {
   TextField,
   IconButton,
 } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import SearchIcon from '@mui/icons-material/Search';
 import { getLocationByIP } from '../api/Location';
 import { isHebrew } from '../utils/common';

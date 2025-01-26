@@ -6,7 +6,7 @@ import {
   Button,
   CircularProgress,
 } from '@mui/material';
-import FrostedBackground from '../features/FrostedBackground';
+import FrostedBackground from '../features/Generics/FrostedBackground';
 import { authenticateUser } from '../api/LoginApi';
 
 const LoginPage = () => {
