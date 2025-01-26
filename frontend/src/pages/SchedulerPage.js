@@ -103,56 +103,56 @@ const SchedulerPage = () => {
     });
   }, []);
   return (
-    <Stack alignItems={'center'} spacing={1}>
+    <Stack alignItems={'center'} spacing={1} sx={{ height: '80vh' }}>
       <FrostedBackground>
-        <Button
-          variant='contained'
-          sx={{ backgroundColor: 'blue', borderRadius: '30px' }}
-          onClick={() => {
-            history.push(`/signup/${isLoggedIn}`);
-          }}
-        >
-          <Typography variant='h5' sx={{ textTransform: 'none' }}>Edit Business</Typography>
-        </Button>
-        <br></br>
-
-        {currentViewName !== 'Month' && (
           <Button
-            sx={{
-              position: 'absolute',
-              right: '60px',
-              top: '30px',
-              zIndex: '9999',
-            }}
-            onClick={() => {
-              setCurrentViewName('Month');
-            }}
             variant='contained'
+            sx={{ backgroundColor: 'blue', borderRadius: '30px' }}
+            onClick={() => {
+              history.push(`/signup/${isLoggedIn}`);
+            }}
           >
-            חזרה לתצוגה חודשית{' '}
+            <Typography variant='h5' sx={{ textTransform: 'none' }}>Edit Business</Typography>
           </Button>
-        )}
-        <Stack sx={{ backgroundColor: 'white' }}>
-          <Scheduler data={schedulerData}>
-            <ViewState
-              currentDate={currentDate} // Dynamically bind currentDate
-              onCurrentDateChange={(newDate) => setCurrentDate(newDate)} // Update state when toolbar changes the date
-              currentViewName={currentViewName}
-              onCurrentViewNameChange={(newViewName) =>
-                setCurrentViewName(newViewName)
-              } // Update state when the view changes
-            />
-            {currentViewName === 'Month' ? (
-              <MonthView timeTableCellComponent={CustomTimeTableCell} />
-            ) : (
-              <DayView startDayHour={8} endDayHour={18} />
-            )}{' '}
-            <Toolbar />
-            <DateNavigator />
-            <TodayButton />
-            <Appointments appointmentComponent={CustomAppointment} />
-          </Scheduler>
-        </Stack>
+          <br></br>
+
+          {currentViewName !== 'Month' && (
+            <Button
+              sx={{
+                position: 'absolute',
+                right: '60px',
+                top: '30px',
+                zIndex: '9999',
+              }}
+              onClick={() => {
+                setCurrentViewName('Month');
+              }}
+              variant='contained'
+            >
+              חזרה לתצוגה חודשית{' '}
+            </Button>
+          )}
+          <Stack sx={{ backgroundColor: 'white', overflowY: 'auto' }}>
+            <Scheduler data={schedulerData}>
+              <ViewState
+                currentDate={currentDate} // Dynamically bind currentDate
+                onCurrentDateChange={(newDate) => setCurrentDate(newDate)} // Update state when toolbar changes the date
+                currentViewName={currentViewName}
+                onCurrentViewNameChange={(newViewName) =>
+                  setCurrentViewName(newViewName)
+                } // Update state when the view changes
+              />
+              {currentViewName === 'Month' ? (
+                <MonthView timeTableCellComponent={CustomTimeTableCell} />
+              ) : (
+                <DayView startDayHour={8} endDayHour={18} />
+              )}{' '}
+              <Toolbar />
+              <DateNavigator />
+              <TodayButton />
+              <Appointments appointmentComponent={CustomAppointment} />
+            </Scheduler>
+          </Stack>
       </FrostedBackground>
     </Stack>
   );

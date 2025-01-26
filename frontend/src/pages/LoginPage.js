@@ -32,51 +32,58 @@ const LoginPage = () => {
   };
 
   return (
-    <Stack alignItems='center' justifyContent='center'>
+    <Stack alignItems='center' justifyContent='center' sx={{ height: '80vh' }}>
       <FrostedBackground>
-        <Typography variant='h3' gutterBottom>
-        Business owner login
-        </Typography>
+        <Stack
+          spacing={4}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ height: '100%' }}
+        >
+          <Typography variant='h3' gutterBottom>
+          Business owner login
+          </Typography>
 
-        <form onSubmit={handleLogin}>
-          <Stack spacing={2}>
-            {/* Email Input */}
-            <TextField
-              label='Email'
-              variant='outlined'
-              fullWidth
-              type='email'
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            {/* Password Input */}
-            <TextField
-              label='Password'
-              variant='outlined'
-              fullWidth
-              type='password'
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            {/* Submit Button */}
-            <Button
-              variant='contained'
-              type='submit'
-              sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-            >
-              {isLoading ? (
-                <CircularProgress
-                  size={24}
-                  sx={{ color: 'white' }}
-                ></CircularProgress>
-              ) : (
-                <Typography variant='h5' sx={{ textTransform: 'none' }}>Log In</Typography>
-              )}
-            </Button>
-          </Stack>
-        </form>
+          <form onSubmit={handleLogin}>
+            <Stack spacing={2}>
+              {/* Email Input */}
+              <TextField
+                label='Email'
+                variant='outlined'
+                fullWidth
+                type='email'
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              {/* Password Input */}
+              <TextField
+                label='Password'
+                variant='outlined'
+                fullWidth
+                type='password'
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              {/* Submit Button */}
+              <Button
+                variant='contained'
+                type='submit'
+                sx={{ backgroundColor: 'black', borderRadius: '30px' }}
+              >
+                {isLoading ? (
+                  <CircularProgress
+                    size={24}
+                    sx={{ color: 'white' }}
+                  ></CircularProgress>
+                ) : (
+                  <Typography variant='h5' sx={{ textTransform: 'none' }}>Log In</Typography>
+                )}
+              </Button>
+            </Stack>
+          </form>
+        </Stack>
       </FrostedBackground>
     </Stack>
   );
