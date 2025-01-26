@@ -22,6 +22,8 @@ import { registerBusiness } from '../api/RegisterApi';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useIsLoggedIn } from '../utils/auth';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 const SignUpPage = () => {
   const { userId } = useParams();
@@ -52,6 +54,8 @@ const SignUpPage = () => {
     instagram: '',
     facebook: '',
   });
+  const isLoggedIn = useIsLoggedIn();
+  const history = useHistory();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -212,6 +216,7 @@ const SignUpPage = () => {
     }
     setIsLoading(false);
   };
+
   const handleUpdate = async () => {
     setIsLoading(true);
     const dataToUpdate = {
@@ -246,7 +251,11 @@ const SignUpPage = () => {
   };
 
   useEffect(() => {
-    if (!userId) return;
+    // Authentication & Validation
+    if (!userId || !isLoggedIn || userId != isLoggedIn) {
+      history.push('/signup');
+      return;
+    }
     const fetchBusinessData = async () => {
       try {
         const docRef = doc(db, 'businesses', userId);
@@ -272,6 +281,7 @@ const SignUpPage = () => {
 
     fetchBusinessData();
   }, [userId]);
+
   return (
     <Stack spacing={2} alignItems='center' sx={{ paddingBottom: 4 }}>
       <FrostedBackground>
