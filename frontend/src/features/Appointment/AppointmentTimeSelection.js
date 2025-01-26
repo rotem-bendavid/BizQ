@@ -115,7 +115,7 @@ const AppointmentTimeSelection = ({
   return (
     <Stack alignItems='center' justifyContent='center' spacing={3}>
       <Typography variant='h4' textAlign='center'>
-        בחר את השעה
+        Choose Time
       </Typography>
       <Typography variant='h6' textAlign='center'>
         {selectedDate}
