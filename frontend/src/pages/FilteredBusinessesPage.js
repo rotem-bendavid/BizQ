@@ -56,12 +56,6 @@ const FilteredBusinessesPage = () => {
         }));
 
         setBusinesses(fetchedBusinesses);
-        setFilteredBusinesses(fetchedBusinesses);
-
-        // Filter businesses directly using the `city` variable
-        if (city != '') {
-          filterBusinesses(searchTerm, city);
-        }
       } catch (error) {
         console.error('Error fetching businesses or location:', error);
       } finally {
@@ -71,6 +65,12 @@ const FilteredBusinessesPage = () => {
 
     fetchLocationAndBusinesses();
   }, [category]);
+
+  useEffect(() => {
+    if (businesses.length > 0) {
+      filterBusinesses(searchTerm, manualCity);
+    }
+  }, [businesses, searchTerm, manualCity]);
 
   const handleSearch = (event) => {
     const value = event.target.value.toLowerCase();
