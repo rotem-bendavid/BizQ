@@ -73,7 +73,7 @@ const LoginPage = () => {
                   sx={{ color: 'white' }}
                 ></CircularProgress>
               ) : (
-                <Typography variant='h5'>connect</Typography>
+                <Typography variant='h5' sx={{ textTransform: 'none' }}>Log In</Typography>
               )}
             </Button>
           </Stack>

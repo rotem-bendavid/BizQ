@@ -56,7 +56,7 @@ const NavBar = () => {
         }}
       >
         <Typography variant='h5' sx={{ textTransform: 'none' }}>
-          {isLoggedIn ? 'My Calendar' : 'Log in'}
+          {isLoggedIn ? 'My Business' : 'Log in'}
         </Typography>
       </Button>
     </Stack>

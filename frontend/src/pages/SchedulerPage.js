@@ -104,16 +104,18 @@ const SchedulerPage = () => {
   }, []);
   return (
     <Stack alignItems={'center'} spacing={1}>
-      <Button
-        variant='contained'
-        sx={{ backgroundColor: 'black', borderRadius: '30px' }}
-        onClick={() => {
-          history.push(`/signup/${isLoggedIn}`);
-        }}
-      >
-        <Typography variant='h5'>עריכת עסק</Typography>
-      </Button>
       <FrostedBackground>
+        <Button
+          variant='contained'
+          sx={{ backgroundColor: 'blue', borderRadius: '30px' }}
+          onClick={() => {
+            history.push(`/signup/${isLoggedIn}`);
+          }}
+        >
+          <Typography variant='h5' sx={{ textTransform: 'none' }}>Edit Business</Typography>
+        </Button>
+        <br></br>
+
         {currentViewName !== 'Month' && (
           <Button
             sx={{
