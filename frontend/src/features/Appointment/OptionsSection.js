@@ -6,7 +6,7 @@ const OptionsSection = ({ services, selectedTypeId, onTypeSelect }) => {
   return (
     <Stack spacing={2} alignItems='center'>
       <Typography variant='h4' gutterBottom>
-        מוצרים לבחירה
+        Menu 
       </Typography>
       <Stack
         sx={{

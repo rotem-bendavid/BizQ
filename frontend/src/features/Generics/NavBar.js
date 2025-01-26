@@ -33,7 +33,7 @@ const NavBar = () => {
           else history.push('/signup');
         }}
       >
-        <Typography variant='h5'>{isLoggedIn ? 'התנתקות' : 'הרשמה'}</Typography>
+        <Typography variant='h5'>{isLoggedIn ? 'Log out' : 'Sign up'}</Typography>
       </Button>
       <Button
         variant='contained'
@@ -57,7 +57,7 @@ const NavBar = () => {
         }}
       >
         <Typography variant='h5'>
-          {isLoggedIn ? 'היומן שלי' : 'כניסה'}
+          {isLoggedIn ? 'My Calander' : 'Log in'}
         </Typography>
       </Button>
     </Stack>
