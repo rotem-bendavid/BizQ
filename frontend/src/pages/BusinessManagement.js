@@ -120,11 +120,11 @@ const BusinessManagement = () => {
             <TextField
               name="city"
               label="City"
-              value={formData.address?.city || ''}
+              value={formData.city || ''}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  address: { ...formData.address, city: e.target.value },
+                  city: e.target.value,
                 })
               }
               disabled={!editing}
@@ -133,11 +133,11 @@ const BusinessManagement = () => {
             <TextField
               name="street"
               label="Street"
-              value={formData.address?.street || ''}
+              value={formData.street || ''}
               onChange={(e) =>
                 setFormData({
                   ...formData,
-                  address: { ...formData.address, street: e.target.value },
+                  street: e.target.value,
                 })
               }
               disabled={!editing}

@@ -85,18 +85,18 @@ const BusinessOwnerPage = ({ userId }) => {
 
           {/* Location */}
           <Typography variant='body1' color='textSecondary' gutterBottom>
-            {data.address.city +
+            {data.city +
               ',' +
-              data.address.street +
+              data.street +
               ',' +
-              data.address.houseNumber}
+              data.houseNumber}
           </Typography>
 
           {/* Social Media */}
           <SocialMediaIcons
             facebook={data.facebook}
             instagram={data.instagram}
-            address={data.address}
+            address={data}
             name={data.name}
             whatsApp={data.phone}
             phone={data.phone}

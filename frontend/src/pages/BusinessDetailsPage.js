@@ -38,7 +38,7 @@ const BusinessDetailsPage = () => {
     <Stack spacing={2} sx={{ padding: '20px' }}>
       <Typography variant="h4">{business.businessName}</Typography>
       <Typography>{business.description || 'No description available.'}</Typography>
-      <Typography>{`City: ${business.address?.city || 'N/A'}`}</Typography>
+      <Typography>{`City: ${business.city || 'N/A'}`}</Typography>
       <Typography>{`Phone: ${business.phone || 'N/A'}`}</Typography>
       <Typography>{`Created At: ${
         business.createdAt?.toDate().toLocaleString() || 'N/A'
