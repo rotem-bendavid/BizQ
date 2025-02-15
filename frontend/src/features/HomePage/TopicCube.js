@@ -23,6 +23,7 @@ const TopicCube = ({ topicObj }) => {
     >
       <img
         src={topicObj.src}
+        alt=''
         style={{ borderRadius: '15px', width: '100%' }}
       ></img>
       <Stack

@@ -185,13 +185,11 @@ const SignUpPage = () => {
     // Proceed with form submission
     const dataToSubmit = {
       ...businessData,
-      address: {
-        city: businessData.city,
-        street: businessData.street,
-        houseNumber: businessData.houseNumber,
-        floor: businessData.floor,
-        apartment: businessData.apartment,
-      },
+      city: businessData.city,
+      street: businessData.street,
+      houseNumber: businessData.houseNumber,
+      floor: businessData.floor,
+      apartment: businessData.apartment,
       services,
       workingDays,
       workingHours,
@@ -221,13 +219,11 @@ const SignUpPage = () => {
     setIsLoading(true);
     const dataToUpdate = {
       ...businessData,
-      address: {
-        city: businessData.city,
-        street: businessData.street,
-        houseNumber: businessData.houseNumber,
-        floor: businessData.floor,
-        apartment: businessData.apartment,
-      },
+      city: businessData.city,
+      street: businessData.street,
+      houseNumber: businessData.houseNumber,
+      floor: businessData.floor,
+      apartment: businessData.apartment,
       services,
       workingDays,
       workingHours,
@@ -252,7 +248,7 @@ const SignUpPage = () => {
 
   useEffect(() => {
     // Authorization validation
-    if (!userId || !isLoggedIn || userId != isLoggedIn) {
+    if (!userId || !isLoggedIn || userId !== isLoggedIn) {
       history.push('/signup');
       return;
     }

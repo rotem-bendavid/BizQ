@@ -85,7 +85,7 @@ export const SocialMediaIcons = ({
           <Instagram />
         </IconButton>
       )}
-      {address && (
+      {addressString && (
         <IconButton
           href={`https://waze.com/ul?q=${encodeURIComponent(addressString)}`}
           target='_blank'
@@ -99,7 +99,7 @@ export const SocialMediaIcons = ({
           />
         </IconButton>
       )}
-      {address && (
+      {addressString && (
         <IconButton
           color='secondery'
           href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(

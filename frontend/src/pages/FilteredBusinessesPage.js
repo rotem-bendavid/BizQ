@@ -93,8 +93,8 @@ const FilteredBusinessesPage = () => {
           business.description.toLowerCase().includes(search));
       const matchesCity =
         !city || // No manual city filter applied
-        (business.address?.city &&
-          business.address.city.toLowerCase().includes(city));
+        (business.city &&
+          business.city.toLowerCase().includes(city));
 
       return matchesSearch && matchesCity;
     });
@@ -233,7 +233,7 @@ const FilteredBusinessesPage = () => {
                         {business.description || 'No description available.'}
                       </Typography>
                       <Typography>{`City: ${
-                        business.address?.city || 'N/A'
+                        business.city || 'N/A'
                       }`}</Typography>
                     </CardContent>
                   </Card>
