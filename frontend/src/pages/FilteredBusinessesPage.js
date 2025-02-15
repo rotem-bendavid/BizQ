@@ -36,7 +36,7 @@ const FilteredBusinessesPage = () => {
         city = city.toLowerCase();
         setManualCity(city);
         setUserCityText(`Showing results for your city: ${city}`);
-        if (city == '') {
+        if (city === '') {
           setUserCityText(`Couldn't find your location`);
         }
 
