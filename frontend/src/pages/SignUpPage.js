@@ -126,6 +126,8 @@ const SignUpPage = () => {
       }
     });
 
+    setErrors(newErrors);
+
     if (missingFields.length > 0) {
       setAlertMessage(`Missing fields: ${missingFields.join(', ')}`);
       setAlertSeverity('error');
